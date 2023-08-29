@@ -1,0 +1,134 @@
+#auths {
+  background-color: #e6e6e6;
+  color: #141414;
+  font-family: "Ms sans serif";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  letter-spacing: 1px;
+}
+
+#auths-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  margin-top: -50px;
+}
+
+.auths-box {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 30px 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border: solid 1px grey;
+  letter-spacing: 1px;
+  background-color: #fafafa;
+  border: 0;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 20px grey;
+          box-shadow: 0px 0px 20px grey;
+  overflow: hidden;
+}
+
+.auths-box hr {
+  background-color: rgba(0, 0, 0, 0.2);
+  height: 0.5px;
+  width: 200%;
+  margin-left: -30px;
+  border: 0;
+}
+
+.auths-box-title {
+  margin-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.auths-box-title h2 {
+  background-color: orange;
+  margin: -30px -40px;
+  margin-bottom: 5px;
+  padding: 10px;
+}
+
+.auths-box-button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.auths-box input {
+  width: 300px;
+  padding: 10px 15px;
+  margin-top: 7px;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 0px 7px grey;
+          box-shadow: 0px 0px 7px grey;
+  border: 0;
+  outline: none;
+}
+
+.auths-box input[type="submit"] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: white;
+  background-color: #0eda63;
+  font-size: 17px;
+  border-radius: 10px;
+  -webkit-box-shadow: 1px 1px 3px grey;
+          box-shadow: 1px 1px 3px grey;
+  cursor: pointer;
+  margin-bottom: -5px;
+}
+
+.auths-box input[type="button"] {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: white;
+  background-color: #c80032;
+  font-size: 17px;
+  border-radius: 10px;
+  -webkit-box-shadow: 1px 1px 3px grey;
+          box-shadow: 1px 1px 3px grey;
+  cursor: pointer;
+  margin-bottom: -5px;
+}
+
+.auths-box-more {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.auths-box-more span:hover {
+  color: orange;
+}
+/*# sourceMappingURL=authsStyles.css.map */
