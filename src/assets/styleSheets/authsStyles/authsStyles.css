@@ -1,11 +1,20 @@
+body {
+  overflow: hidden;
+}
+
 #auths {
-  background-color: #e6e6e6;
+  background: linear-gradient(125deg, rgba(255, 136, 0, 0.3) 50%, #e6e6e6 50%);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   color: #141414;
   font-family: "Ms sans serif";
   position: absolute;
   width: 100%;
   height: 100%;
   letter-spacing: 1px;
+  overflow: hidden;
 }
 
 #auths-content {
@@ -17,7 +26,36 @@
   margin-top: -50px;
 }
 
+@-webkit-keyframes zoomOut {
+  0% {
+    -webkit-transform: scale(0.75);
+            transform: scale(0.75);
+    opacity: .1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    -webkit-transform: scale(0.75);
+            transform: scale(0.75);
+    opacity: .1;
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 1;
+  }
+}
+
 .auths-box {
+  -webkit-animation: zoomOut 0.3s ease-in-out;
+          animation: zoomOut 0.3s ease-in-out;
+  overflow: hidden;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -34,19 +72,15 @@
           flex-direction: column;
   border: solid 1px grey;
   letter-spacing: 1px;
-  background-color: #fafafa;
   border: 0;
   border-radius: 10px;
-  -webkit-box-shadow: 0px 0px 20px grey;
-          box-shadow: 0px 0px 20px grey;
   overflow: hidden;
 }
 
 .auths-box hr {
   background-color: rgba(0, 0, 0, 0.2);
   height: 0.5px;
-  width: 200%;
-  margin-left: -30px;
+  width: 100%;
   border: 0;
 }
 
@@ -61,11 +95,14 @@
           flex-direction: column;
 }
 
-.auths-box-title h2 {
-  background-color: orange;
+.auths-box-title h1 {
+  color: #ff8800;
   margin: -30px -40px;
   margin-bottom: 5px;
   padding: 10px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
 }
 
 .auths-box-button {
@@ -75,45 +112,30 @@
   width: 100%;
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  margin-bottom: 20px;
+  margin-top: 5px;
 }
 
 .auths-box input {
-  width: 300px;
-  padding: 10px 15px;
+  width: 275px;
+  padding: 15px 20px;
   margin-top: 7px;
   margin-bottom: 20px;
   letter-spacing: 1px;
-  -webkit-box-shadow: 0px 0px 7px grey;
-          box-shadow: 0px 0px 7px grey;
-  border: 0;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
   outline: none;
 }
 
 .auths-box input[type="submit"] {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
   color: white;
   background-color: #0eda63;
   font-size: 17px;
-  border-radius: 10px;
+  border-radius: 15px;
   -webkit-box-shadow: 1px 1px 3px grey;
           box-shadow: 1px 1px 3px grey;
   cursor: pointer;
-  margin-bottom: -5px;
-}
-
-.auths-box input[type="button"] {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  color: white;
-  background-color: #c80032;
-  font-size: 17px;
-  border-radius: 10px;
-  -webkit-box-shadow: 1px 1px 3px grey;
-          box-shadow: 1px 1px 3px grey;
-  cursor: pointer;
+  padding: 10px 20px;
   margin-bottom: -5px;
 }
 
@@ -121,14 +143,34 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  margin-top: 20px;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  text-align: center;
+  row-gap: 15px;
+  margin-top: 15px;
   cursor: pointer;
 }
 
-.auths-box-more span:hover {
-  color: orange;
+.auths-box-more span {
+  color: rgba(0, 0, 139, 0.6);
+  border: solid 1px rgba(0, 0, 139, 0.7);
+  padding: 5px 10px;
+  border-radius: 10px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+.auths-box-more a {
+  text-decoration: none;
+}
+
+.error-msg {
+  color: rgba(255, 0, 0, 0.7);
 }
 /*# sourceMappingURL=authsStyles.css.map */

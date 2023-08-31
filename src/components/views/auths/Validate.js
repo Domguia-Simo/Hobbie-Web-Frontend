@@ -20,8 +20,8 @@ const submit = async()=>{
         <React.Fragment>
              <div className='auths-box'>
                <div className='auths-box-title'>
-                    <h2>Hobbie</h2><br/>
-                    <center>Validate Email &nbsp;
+                    <center>
+                    <h1>Hobbie</h1>
                         {
                             loading ?
                             <img src={require('../../../assets/images/loaders/loading.gif')} width='18px' height="18px"/>
@@ -31,11 +31,11 @@ const submit = async()=>{
                 </div> 
 
 
-                <label htmlFor="code">Email Verification Code</label>
+                {/* <label htmlFor="code">Email Verification Code</label> */}
                 <input 
                     type="text" 
                     id="code" 
-                    placeholder="Ex : 10927"
+                    placeholder="Email Verification Code"
                     onChange={(e)=>handleChange(e)}
                 />
 
@@ -48,12 +48,14 @@ const submit = async()=>{
                         onClick={submit}
                     />
                 </div>
+
+                <div className='auths-box-more'>
+                <span>Resend Verification Code</span> 
+
+                </div>
+
             </div>
 
-            {/* <div className='auths-box-more'>
-               <span>Forgot Password</span> 
-               <span>No Account</span> 
-            </div> */}
         </React.Fragment>
     )
 }

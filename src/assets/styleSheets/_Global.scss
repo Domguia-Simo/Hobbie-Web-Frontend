@@ -4,26 +4,20 @@ $color : rgb(20,20,20);
 $authBg : rgb(230,230,230);
 $family:'Ms sans serif';
 $authsBoxBg:rgb(250,250,250);
-$primaryColor:rgb(255, 165, 0);
+$primaryColor:rgb(255, 136, 0);
+// $primaryColor:rgb(255, 166, 0);
+
 $primary:rgb(14, 218, 99);
 $secondary:rgb(200,0,50);
 
-@mixin button1(){
-    width:fit-content;
+@mixin button(){
+    // width:fit-content;
     color:white;
     background-color:$primary;
     font-size:17px;
-    border-radius:10px;
+    border-radius:15px;
     box-shadow: 1px 1px 3px grey;
     cursor: pointer;
-}
+    padding:10px 20px;
 
-@mixin button2(){
-    width:fit-content;
-    color:white;
-    background-color:$secondary;
-    font-size:17px;
-    border-radius:10px;
-    box-shadow: 1px 1px 3px grey;
-    cursor: pointer;
 }

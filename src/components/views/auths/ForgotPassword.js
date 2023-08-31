@@ -2,10 +2,9 @@ import React,{useState}  from 'react'
 import {Link } from 'react-router-dom'
 import request from '../../request/Request'
 
-const Register =()=>{
+const ForgotPassword =()=>{
 
     const [data ,setData] = useState({
-        fullName:'',
         email:'',
         password:'',
         confirm:''
@@ -19,11 +18,9 @@ const Register =()=>{
 
     const submit = async()=>{
         // console.log(data)
-        // return
-        let temp = await request({method:'post' ,url:'http://192.168.179.195:5000/api/user/register' ,body:data})
-            console.log(temp)
-            setRespond(temp)
-            console.log(respond)
+        let temp = await request({method:'post' ,url:'http://localhost' ,body:data})
+        setRespond(temp)
+        console.log(respond)
 
     }
 
@@ -41,27 +38,18 @@ const Register =()=>{
             </div> 
 
             <input 
-                type="text" 
-                id="name" 
-                placeholder="Full Name"
-                name="fullName"
-                value={data.fullName}
-                onChange={(e)=>handleChange(e)}
-            />
-
-            <input 
                 type="email" 
                 id="email" 
-                placeholder="Email"
+                placeholder="Current Email"
                 name="email"
                 value={data.email}
                 onChange={(e)=>handleChange(e)}
             />
 
-            <input 
+            {/* <input 
                 type="password" 
                 id="password" 
-                placeholder="Password"
+                placeholder="New Password"
                 name="password"
                 value={data.password}
                 onChange={(e)=>handleChange(e)}
@@ -70,30 +58,28 @@ const Register =()=>{
             <input 
                 type="password" 
                 id="confirm" 
-                placeholder="Confirm Password"
+                placeholder="Confirm New Password"
                 name="confirm"
                 value={data.confirm}
                 onChange={(e)=>handleChange(e)}
-            />
-            <center className='error-msg'>
-                {respond ? respond.error:''}
-            </center>
+            /> */}
+
             <hr/>
             <div className='auths-box-button'>
                 <input 
                     type="submit" 
-                    value="Register"
+                    value="Authenticate"
                     onClick={submit}
                 />
             </div>
 
-            <div className='auths-box-more'>
+            {/* <div className='auths-box-more'>
                <Link to="/auths/login"> <span>Already Have an Account</span> </Link>
-            </div>
+            </div> */}
 
         </div>
         </React.Fragment>
     )
 }
 
-export default Register
+export default ForgotPassword
