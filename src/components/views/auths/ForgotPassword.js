@@ -17,10 +17,11 @@ const ForgotPassword =()=>{
     }
 
     const submit = async()=>{
-        // console.log(data)
+        setLoading(true)
         let temp = await request({method:'post' ,url:'http://localhost' ,body:data})
         setRespond(temp)
         console.log(respond)
+        setLoading(false)
 
     }
 
@@ -31,9 +32,11 @@ const ForgotPassword =()=>{
                 <center>
                 <h1>Hobbie</h1>
                     {
-                    loading ? 
-                    <img src={require('../../../assets/images/loaders/loading.gif')} width='18px' height="18px"/>
-                    :''
+                        <img 
+                            src={require('../../../assets/images/loaders/loading4.gif')}
+                            className='loader'
+                            style={{visibility:loading ? 'visible':'hidden'}} 
+                        />
                     }</center>
             </div> 
 

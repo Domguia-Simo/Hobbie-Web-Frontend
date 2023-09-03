@@ -18,12 +18,12 @@ const Register =()=>{
     }
 
     const submit = async()=>{
-        // console.log(data)
-        // return
-        let temp = await request({method:'post' ,url:'http://192.168.179.195:5000/api/user/register' ,body:data})
-            console.log(temp)
-            setRespond(temp)
-            console.log(respond)
+        setLoading(true)
+        let temp = await request({method:'post' ,url:'http://localhost:5000/api/user/register' ,body:data})
+        console.log(temp)
+        setRespond(temp)
+        console.log(respond)
+        setLoading(false)
 
     }
 
@@ -34,9 +34,11 @@ const Register =()=>{
                 <center>
                 <h1>Hobbie</h1>
                     {
-                    loading ? 
-                    <img src={require('../../../assets/images/loaders/loading.gif')} width='18px' height="18px"/>
-                    :''
+                        <img 
+                            src={require('../../../assets/images/loaders/loading4.gif')}
+                            className='loader'
+                            style={{visibility:loading ? 'visible':'hidden'}} 
+                        />
                     }</center>
             </div> 
 

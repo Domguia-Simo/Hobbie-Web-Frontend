@@ -3,7 +3,7 @@ body {
 }
 
 #auths {
-  background: linear-gradient(125deg, rgba(255, 136, 0, 0.3) 50%, #e6e6e6 50%);
+  background: linear-gradient(125deg, rgba(255, 136, 0, 0.302) 50%, #e6e6e6 50%);
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -100,6 +100,7 @@ body {
   margin: -30px -40px;
   margin-bottom: 5px;
   padding: 10px;
+  margin-bottom: -15px;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -171,6 +172,12 @@ body {
 }
 
 .error-msg {
-  color: rgba(255, 0, 0, 0.7);
+  color: rgba(255, 0, 0, 0.8);
+  font-weight: bold;
+}
+
+.loader {
+  width: 150px;
+  margin-bottom: -20px;
 }
 /*# sourceMappingURL=authsStyles.css.map */

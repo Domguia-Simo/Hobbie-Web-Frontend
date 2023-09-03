@@ -9,16 +9,17 @@ const [data ,setData] = useState({
     password:'',
 })
 const [respond ,setRespond] = useState()
-const [loading,setLoading] = useState(true)
+const [loading,setLoading] = useState(false)
 
 function handleChange(e){
     setData({...data ,[e.target.name]:e.target.value})
 }
 const submit = async()=>{
-    // console.log(data)
-    let temp = await request({method:'post' ,body:data,url:'http://localhost'})
+    setLoading(true)
+    let temp = await request({method:'post' ,body:data,url:'http://localhost:5000/api/user/login'})
     setRespond(temp)
     console.log(respond)
+    setLoading(false)
 
 }
 
@@ -28,10 +29,13 @@ const submit = async()=>{
                <div className='auths-box-title'>
                     <center>
                     <h1>Hobbie</h1>
-                        {/* {loading ?
-                         <img src={require('../../../assets/images/loaders/loading.gif')} width='18px' height="18px"/>
-                        :''
-                        } */}
+                        {
+                         <img 
+                            src={require('../../../assets/images/loaders/loading4.gif')}
+                            className='loader'
+                            style={{visibility:loading ? 'visible':'hidden'}} 
+                        />
+                        }
                         </center>
                     
                 </div> 
@@ -53,6 +57,9 @@ const submit = async()=>{
                     value={data.password}
                     onChange={(e)=>{handleChange(e)}}
                 />
+                <center className='error-msg'>
+                    {respond ? respond.error:''}
+                </center>
                     <hr/>
                 <div className='auths-box-button'>
                     <input

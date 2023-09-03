@@ -10,10 +10,12 @@ const [loading ,setLoading] = useState(false)
 function handleChange(e){setCode(e.target.value)}
 
 const submit = async()=>{
-    // console.log(code)
+    setLoading(true)
     let temp = await request({method:'post',body:code ,url:'http://localhost'})
     setRespond(temp)
     console.log(respond)
+    setLoading(false)
+
 }
 
     return(
@@ -23,9 +25,11 @@ const submit = async()=>{
                     <center>
                     <h1>Hobbie</h1>
                         {
-                            loading ?
-                            <img src={require('../../../assets/images/loaders/loading.gif')} width='18px' height="18px"/>
-                            :''
+                            <img 
+                                src={require('../../../assets/images/loaders/loading4.gif')}
+                                className='loader'
+                                style={{visibility:loading ? 'visible':'hidden'}} 
+                            />
                         }</center>
                     
                 </div> 

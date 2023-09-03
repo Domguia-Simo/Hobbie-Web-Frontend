@@ -6,7 +6,7 @@ body{
 
 #auths{
 
-    background:linear-gradient(125deg, rgba(255, 136, 0,0.3) 50% , $authBg 50%) ;
+    background:linear-gradient(125deg, rgba(255, 136, 0, 0.302) 50% , $authBg 50%) ;
     // background:linear-gradient(125deg, rgba(255, 136, 0,0.5) , $authBg 25%,rgba(255, 136, 0,0.5) 200% ) ;
     user-select: none;
     color: $color;
@@ -74,6 +74,7 @@ body{
             margin:-30px -40px;
             margin-bottom:5px;
             padding:10px;
+            margin-bottom:-15px;
             width: fit-content;
         }
         
@@ -131,5 +132,11 @@ body{
     }
 }
 .error-msg{
-    color:rgba(255,0,0,0.7)
+    color:rgba(255,0,0,0.8);
+    font-weight: bold;
+}
+
+.loader{
+    width:150px;
+    margin-bottom:-20px;
 }
