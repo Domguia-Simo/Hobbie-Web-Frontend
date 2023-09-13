@@ -12,8 +12,9 @@ const App = () =>{
       <Router>
       {/* <h1>Welcome to Hobbie frontend</h1> */}
         <Routes>
-          <Route path='/' element={<Main/>} />
+          <Route path='/home/*' element={<Main/>} />
           <Route path="/auths/*" element={<Auths/>}/>
+          <Route path='*' element={<Main/>}/>
         </Routes>
       </Router>
     </React.Fragment>

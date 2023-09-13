@@ -78,7 +78,7 @@ let displayPosts = posts.map(post =>{
 
                 </div>
                 <div className='description'>
-                   <span style={{color:'darkblue'}}> {post.userName}; </span>{post.description}
+                   <span style={{color:'darkblue'}}> {post.userName}, </span>{post.description}
                 </div>
                 <div className='actions'>
                     <div>

@@ -1,27 +1,30 @@
 import React from 'react'
-import {Header,Category,FixFoot} from '../header/Header'
-import Status from '../views/main/Status'
-import Posts from '../views/main/Posts'
+import {Header} from '../header/Header'
+import {Route ,Routes} from 'react-router-dom'
+import mainRoutes from '../../mainRoutes'
+
+import Default from '../views/main/Default'
 
 import '../../assets/styleSheets/mainStyles/mainStyles.css'
 
 const Main =()=>{
-
+    let mainRoute = mainRoutes.map(route => {
+        return <Route path={`${route.path}`} element={route.component} key={route.path} />
+    })
+    
     return(
         <React.Fragment>
             <div id="main-body">
                 <Header/>
-                <Category/>
 
                 <div className='main-content'>
-                    <Status/>
-                    <Posts/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    {
+                    <Routes>
+                        {mainRoute}
+                        <Route path='*' element={<Default/>}/>
+                    </Routes>
+                    }
                 </div>
-                    <FixFoot/>
-
 
             </div>
         </React.Fragment>

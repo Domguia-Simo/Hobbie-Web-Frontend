@@ -19,7 +19,7 @@ const Register =()=>{
 
     const submit = async()=>{
         setLoading(true)
-        let temp = await request({method:'post' ,url:'http://localhost:5000/api/user/register' ,body:data})
+        let temp = await request({method:'post' ,url:'http://192.168.213.195:5000/api/user/register' ,body:data})
         console.log(temp)
         setRespond(temp)
         console.log(respond)

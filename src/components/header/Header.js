@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import {Link } from 'react-router-dom'
 import '../../assets/styleSheets/headerStyles/headerStyles.css'
 
 export const Header =()=>{
@@ -12,9 +13,9 @@ export const Header =()=>{
                     </h2>
 
                     <div className='options'>
-                        <span className='fas fa-home' title='home' onClick={()=>setActive('home')} id={active == 'home' ? 'active':''} ></span>
+                       <Link to='/home/posts'> <span className='fas fa-home' title='home' onClick={()=>setActive('home')} id={active == 'home' ? 'active':''} ></span> </Link>
                         <span className='far fa-user' title='account' onClick={()=>setActive('user')} id={active == 'user' ? 'active':''} ></span>
-                        <span className='far fa-message' title='messages' onClick={()=>setActive('message')} id={active == 'message' ? 'active':''} ></span>
+                       <Link to='/home/chat'> <span className='far fa-message' title='messages' onClick={()=>setActive('message')} id={active == 'message' ? 'active':''} ></span> </Link>
                         <span className='far fa-bell' title='notification' onClick={()=>setActive('notification')} id={active == 'notification' ? 'active':''} ></span>
                         <span className='fas fa-bars' title='option' onClick={()=>setActive('option')} id={active == 'option' ? 'active':''} ></span>
 
