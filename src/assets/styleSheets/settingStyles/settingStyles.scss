@@ -1,0 +1,29 @@
+@import '../Global';
+
+.setting{
+    position:absolute;
+    margin-top:54px;    
+    width:100%;
+    display: flex;
+    flex-direction: column;
+    font-size: large;
+    row-gap: 15px;
+    h2{
+        margin-left:10px;
+    }
+    &-body{
+        display: flex;
+        flex-direction: column;
+        row-gap: 15px;
+        width:85%;
+        button{
+            font-size: xx-large;
+            border:0;
+            @include button();
+            &[title='logout']{
+
+                background-color: $secondary;
+            }
+        }
+    }
+}

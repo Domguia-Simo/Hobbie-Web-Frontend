@@ -3,7 +3,7 @@ import {Header} from '../header/Header'
 import {Route ,Routes} from 'react-router-dom'
 import mainRoutes from '../../mainRoutes'
 
-import Default from '../views/main/Default'
+import {DefaultView ,LoginView} from '../views/main/Default'
 
 import '../../assets/styleSheets/mainStyles/mainStyles.css'
 
@@ -21,7 +21,7 @@ const Main =()=>{
                     {
                     <Routes>
                         {mainRoute}
-                        <Route path='*' element={<Default/>}/>
+                        <Route path='*' element={<DefaultView/>}/>
                     </Routes>
                     }
                 </div>

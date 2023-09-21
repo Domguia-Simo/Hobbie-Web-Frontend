@@ -89,7 +89,13 @@
   padding-right: 8px;
 }
 
+.header .options a {
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+}
+
 .header .options span {
+  text-decoration: none;
   border-bottom: solid 2px transparent;
   padding: 5px 15px;
   cursor: pointer;
@@ -112,7 +118,11 @@
   color: rgba(0, 0, 0, 0.6);
   -ms-flex-pack: distribute;
       justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 100%;
-  font-size: x-large;
+  font-size: large;
+  font-weight: lighter;
 }
 /*# sourceMappingURL=headerStyles.css.map */

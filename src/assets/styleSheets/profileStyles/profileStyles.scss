@@ -1,0 +1,95 @@
+@import '../Global';
+
+.profile{
+    position:absolute;
+    margin-top:54px;    
+    display: flex;
+    flex-direction: column;
+    // border:s olid 1px;
+    width:100%;
+
+    &-bg{
+        width: 100%;
+        height:230px;
+        background-color: rgb(206, 205, 205);
+        display: flex;
+        align-items: flex-end;
+        // border:solid 1px;
+    }
+
+    &-picture{
+        width: 150px;
+        height:150px;
+        border:solid 3px white;
+        border-radius:50%;
+        background-color: rgb(81, 81, 247);
+        position:relative;
+        margin-left:5px;   
+        margin-bottom:-20px;
+    }
+
+    &-actions{
+        display: flex;
+        flex-direction: column;
+        margin-top:-10px;
+        padding:5px;
+        background-color: white;
+        padding-bottom:25px;
+        h3{
+            margin:5px;
+            margin-left:10px;
+        }
+        div{
+            display: flex;
+            justify-content: space-around;
+            button{
+                font-weight: 500;
+                font-family:$family;
+                padding:10px 7px;
+                font-size: smaller;
+                border-radius: 10px;
+                border:0;
+                color:black;
+                background-color: rgba(0,0,0,0.2);
+            }
+        }
+    }
+
+    &-body{
+        font-size: medium;
+        background-color: white;
+        margin-top: 7px;
+        display: flex;
+        flex-direction: column;
+        .head-links{
+            display: flex;
+            justify-content: space-around;
+            font-size: large;
+            font-weight: bold;
+            span{
+                flex:1;
+                padding:10px;
+                text-align: center;
+                border-bottom:solid 3px transparent;
+            }
+        }
+        .profile-posts{
+            display: grid;
+            grid-template-columns: repeat(auto-fill ,minmax(125px ,1fr));
+            row-gap:1px;
+            column-gap: 1px;
+            div{
+                height:130px;
+                background-color: rgb(153, 153, 216);
+            }
+        }
+        .profile-bio{
+            padding:15px;
+            // letter-spacing:1px;
+            line-height: 35px;
+            font-weight: 100;
+            font-size: larger;
+            font-weight: 400;
+        }
+    }
+}   

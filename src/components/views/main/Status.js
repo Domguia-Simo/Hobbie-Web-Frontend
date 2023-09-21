@@ -10,7 +10,7 @@ const Status =()=>{
 
     let displayStatus = userStatus.map(status => {
         return(
-            <div>
+            <div key={status}>
             <span className=' status'></span>
                 <br/>
             {status}

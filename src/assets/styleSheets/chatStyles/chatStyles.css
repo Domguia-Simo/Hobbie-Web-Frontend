@@ -181,6 +181,9 @@
 
 .chat-container .chat-body {
   padding: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .chat-container .chat-foot {

@@ -106,7 +106,7 @@ let displayContacts = contacts.map(contact =>{
                     }
                 return(
                     // <Link to='/home/private-chat'>
-                        <div className='contact' onClick={()=>openChat(contact)}>
+                        <div className='contact' onClick={()=>openChat(contact)} key={contact.userName}>
                             <div>
                                 {contact.profilePicture}
                                 <span>
@@ -126,7 +126,7 @@ let displayContacts = contacts.map(contact =>{
 
             return(
                 // <Link to='/home/private-chat'>
-                    <div className='contact' onClick={()=>openChat(contact)}>
+                    <div className='contact' onClick={()=>openChat(contact)} key={contact.userName}>
                         <div>
                             {contact.profilePicture}
                             <span>
@@ -212,7 +212,6 @@ function changeIcon(){
 function sendMessage(e){
     e.preventDefault()
 }
-console.log(isTyping)
     return(
         <React.Fragment>
             <div className='chat'>
