@@ -1,11 +1,12 @@
 import React,{useState}  from 'react'
-import {Link } from 'react-router-dom'
+import {Link ,useNavigate} from 'react-router-dom'
 import request from '../../request/Request'
 
 const Register =()=>{
+    let navigate = useNavigate()
 
     const [data ,setData] = useState({
-        fullName:'',
+        userName:'',
         email:'',
         password:'',
         confirm:''
@@ -19,10 +20,12 @@ const Register =()=>{
 
     const submit = async()=>{
         setLoading(true)
-        let temp = await request({method:'post' ,url:'http://192.168.213.195:5000/api/user/register' ,body:data})
+        let temp = await request({method:'post' ,url:'http://192.168.50.195:5000/api/user/register' ,body:data})
         console.log(temp)
+            if(temp.message){
+                navigate('auths/login')
+            }
         setRespond(temp)
-        console.log(respond)
         setLoading(false)
 
     }
@@ -45,9 +48,9 @@ const Register =()=>{
             <input 
                 type="text" 
                 id="name" 
-                placeholder="Full Name"
-                name="fullName"
-                value={data.fullName}
+                placeholder="User Name"
+                name="userName"
+                value={data.userName}
                 onChange={(e)=>handleChange(e)}
             />
 

@@ -1,36 +1,30 @@
-import React from 'react'
+import React,{useState ,useMemo} from 'react'
 import Status from './Status'
 import Posts from './Posts'
 import { Category ,FixFoot} from '../../header/Header'
 
-export const DefaultView =()=>{
+ const DefaultView =()=>{
+
+const [user ,setUser] = useState(false)
+
+useMemo(()=>{
+    if(localStorage.getItem('userId')){
+        setUser(true)
+    }
+},[0])
+
     return(
         <React.Fragment>
 
             <Category/>
-                {/* <Status/> */}
+                {user ? <Status/> : ''}
                 <Posts/>
                 <br/>
        
-            {/* <FixFoot/>   */}
+            {user ? <FixFoot/> : ''}
               
         </React.Fragment>
     )
 }
 
-export const LoginView =()=>{
-    return(
-        <React.Fragment>
-
-            <Category/>
-                <Status/>
-                <Posts/>
-                <br/>
-                <br/>
-                <br/>
-            <FixFoot/>  
-              
-        </React.Fragment>
-    )
-}
-
+export default DefaultView

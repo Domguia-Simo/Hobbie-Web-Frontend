@@ -1,4 +1,5 @@
-import React from 'react'
+import React,{useState,useMemo} from 'react'
+import NoAccount from '../modals/NoAccount'
 
 import '../../../assets/styleSheets/postStyles/postStyles.css'
 
@@ -57,59 +58,112 @@ const posts = [
 
 const Posts = () => {
 
+    const [NoAccountModal ,setNoAccountModal] = useState(false)
+    const [user ,setUser] = useState(false)
+
+    useMemo(()=>{
+        if(localStorage.getItem('userId')){
+            setUser(true)
+        }
+    },[0])
+
+    //Function to handle post Options 
+function handleOptions(){
+    if(!user){
+        setNoAccountModal(true)
+    }
+
+}
+    //Function to handle post Like
+function handleLike(){
+    if(!user){
+         setNoAccountModal(true)
+    }
+}
+    //Function to handle post Like
+function handleComment(){
+    if(!user){
+         setNoAccountModal(true)
+    }
+}
+    //Function to handle post Like
+function handleDownload(){
+    if(!user){
+         setNoAccountModal(true)
+    }
+}
+    //Function to handle post Like
+function handleShare(){
+    if(!user){
+         setNoAccountModal(true)
+    }
+}
+
+//to disable the modal after a few second
+useMemo(()=>{
+    if(NoAccountModal){
+        clearTimeout()
+        setTimeout(()=>{
+            setNoAccountModal(false)
+        },10000)
+    }
+},[NoAccountModal])
+
+
 let displayPosts = posts.map(post =>{
     return(
-        <div className='post-container'>
-                
-            <div className='post-head'>
-                <div>
-                    {post.profilePicture}
+            <div className='post-container' key={post.description}>
+                    
+                <div className='post-head'>
                     <div>
-                        <span className='bold'>{post.userName}</span>
-                        <span className='light'>{post.dateOfPublication}</span>
+                        {post.profilePicture}
+                        <div>
+                            <span className='bold'>{post.userName}</span>
+                            <span className='light'>{post.dateOfPublication}</span>
+                        </div>
+                    </div>
+                    <span className='options' onClick={()=>handleOptions()}>...</span>
+                </div>
+
+                <div className='post-body'>
+                    <div className='content'>
+                    {post.file}
+
+                    </div>
+                    <div className='description'>
+                    <span style={{color:'darkblue'}}> {post.userName}, </span>{post.description}
+                    </div>
+                    <div className='actions'>
+                        <div onClick={()=>handleLike()}>
+                        {post.likeNumber} <span className='fas fa-heart' style={{color:'rgba(255,0,0,0.6)'}}></span>
+                        </div>
+
+                        <div onClick={()=>handleComment()}>
+                        {post.commentNumber} <span className='fas fa-comment' style={{color:'rgba(0,0,255,0.6)'}}></span>
+                        </div>
+
+                        <div onClick={()=>handleDownload()}>
+                            <span className='fas fa-download' style={{color:'rgba(100,200,100,0.7)'}}></span>
+                        </div>
+
+                        <div onClick={()=>handleShare()}>
+                            <span className='fas fa-share' style={{color:'rgba(0,0,0,0.6)'}}></span>
+                        </div>
+
                     </div>
                 </div>
-                <span className='options'>...</span>
+
+                <div className='post-foot'>
+
+                </div>
+
             </div>
-
-            <div className='post-body'>
-                <div className='content'>
-                 {post.file}
-
-                </div>
-                <div className='description'>
-                   <span style={{color:'darkblue'}}> {post.userName}, </span>{post.description}
-                </div>
-                <div className='actions'>
-                    <div>
-                       {post.likeNumber} <span className='fas fa-heart' style={{color:'rgba(255,0,0,0.6)'}}></span>
-                    </div>
-
-                    <div>
-                       {post.commentNumber} <span className='fas fa-comment' style={{color:'rgba(0,0,255,0.6)'}}></span>
-                    </div>
-
-                    <div>
-                        <span className='fas fa-download' style={{color:'rgba(100,200,100,0.7)'}}></span>
-                    </div>
-
-                    <div>
-                        <span className='fas fa-share' style={{color:'rgba(0,0,0,0.6)'}}></span>
-                    </div>
-
-                </div>
-            </div>
-
-            <div className='post-foot'>
-
-             </div>
-
-         </div>
     )
 })
 
     return(
         <React.Fragment>
+            {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
             {displayPosts}
         </React.Fragment>
     )

@@ -4,6 +4,7 @@ import '../../assets/styleSheets/headerStyles/headerStyles.css'
 
 export const Header =()=>{
     const [active ,setActive] = useState('home')
+    const [user ,setUser] = useState(false)
 
 let path = window.location.pathname.split('/')
 path = path[path.length-1]
@@ -21,7 +22,11 @@ useMemo(()=>{
     }
 },[0])
 
-let user = false;
+useMemo(()=>{
+    if(localStorage.getItem('userId')){
+        setUser(true)
+    }
+},[0])
 
     return(
     <React.Fragment>
@@ -60,8 +65,11 @@ let user = false;
                 </Link>
 
                 <Link to='/auths/login'> 
+                    &nbsp;&nbsp;
                     <span className='fas fa-power-off' ></span>
+                    &nbsp;&nbsp;&nbsp;
                 </Link>
+
             </div>
         }
     </div>

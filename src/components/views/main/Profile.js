@@ -1,11 +1,7 @@
 import React,{useState} from 'react'
+import {Link} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
-
-const user ={
-    userName:'Simo Ulrich',
-
-}
 
 const Profile =()=>{
     const [body ,setBody] = useState('posts')
@@ -21,10 +17,13 @@ const Profile =()=>{
                 <br/>
 
                 <div className='profile-actions'>
-                   <h3> {user.userName}</h3><br/>
+                   <h3> {localStorage.getItem('userName')}</h3><br/>
                     <div>
+                        
                         <button>
-                        <span className='fas fa-plus'></span> Create Post
+                            <Link to='/home/profile/createPost'>
+                                <span className='fas fa-plus'></span> Create Post
+                            </Link>
                         </button>
 
                         <button>

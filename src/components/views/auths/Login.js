@@ -1,8 +1,9 @@
 import React,{useState}  from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 import request from '../../request/Request'
 
 const Login =()=>{
+    let navigate = useNavigate()
 
 const [data ,setData] = useState({
     email:'',
@@ -16,9 +17,16 @@ function handleChange(e){
 }
 const submit = async()=>{
     setLoading(true)
-    let temp = await request({method:'post' ,body:data,url:'http://192.168.213.195:5000/api/user/login'})
+    let temp = await request({method:'post' ,body:data,url:'http://192.168.50.195:5000/api/user/login'})
+    console.log(temp)
+    if(temp.id){
+        localStorage.removeItem('userId')
+        localStorage.setItem('userId',temp.id)
+        localStorage.setItem('userName',temp.userName)
+
+        navigate('/home/post');
+    }
     setRespond(temp)
-    console.log(respond)
     setLoading(false)
 
 }

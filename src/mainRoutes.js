@@ -1,8 +1,9 @@
-import {DefaultView ,LoginView} from './components/views/main/Default'
+import DefaultView from './components/views/main/Default'
 import Chat from './components/views/main/Chat'
 import Notification from './components/views/main/Notification'
 import Profile from './components/views/main/Profile'
 import Setting from './components/views/main/Setting'
+import CreatePostForm from './components/views/forms/CreatePostForm'
 
 //trying to make this component a seperate route without conditional rendering ,
 // so as to prodeuce a smooth navigation on mobile
@@ -14,11 +15,6 @@ const mainRoutes = [
         component:<DefaultView/>,
         layout:'/home'
     },
-    // {
-    //     path:'/posts',
-    //     component:<LoginView/>,
-    //     layout:'/home'
-    // },
     {
         path:'/chat',
         component:<Chat/>,
@@ -30,7 +26,7 @@ const mainRoutes = [
         layout:'/home'
     },
     {
-        path:'/profile',
+        path:'/profile/*',
         component:<Profile/>,
         layout:'/home'
     },
@@ -44,6 +40,12 @@ const mainRoutes = [
         component:<Setting/>,
         layout:'/home'
     },
+//Sub routes of Profile Component
+    {
+        path:'/profile/createPost',
+        component:<CreatePostForm/>,
+        layout:'/home'
+    }
 ]
 
 export default mainRoutes
