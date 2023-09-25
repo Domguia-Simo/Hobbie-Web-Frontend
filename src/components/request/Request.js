@@ -8,7 +8,7 @@ const request = async({method ,url ,body}) => {
         //Get Request
         case 'get':
             console.log('get Request')
-            return
+            // return
             result = await fetch(url,{
                 method:"get"
             })

@@ -19,15 +19,21 @@ const sendPost=async()=>{
         userId:localStorage.getItem('userId'),
         description:description,
         dateOfCreation:date,
+        userName:localStorage.getItem('userName')
     }
     setLoading(true)
 
-        // let temp = await request({method:'post',url:'http://localhost:5000/api/post/createPost',body:body})
-        // let postId = temp.id
+        let temp = await request({method:'post',url:'http://localhost:5000/api/post/createPost',body:body})
+            console.log(temp)
+
+        let postId = temp.postId
+        let userId = localStorage.getItem('userId')
+        console.log(userId ,postId)
+
         let formData = new FormData
             formData.append('file',file)
             console.log(formData)
-            fetch('http://localhost:5000/api/post/uploadFile/'+localStorage.getItem('userId'),{
+            fetch(`http://localhost:5000/api/post/uploadFile/${userId}/${postId}`,{
                 method:'post',
                 body:formData
             })

@@ -17,7 +17,7 @@ function handleChange(e){
 }
 const submit = async()=>{
     setLoading(true)
-    let temp = await request({method:'post' ,body:data,url:'http://192.168.50.195:5000/api/user/login'})
+    let temp = await request({method:'post' ,body:data,url:'http://localhost:5000/api/user/login'})
     console.log(temp)
     if(temp.id){
         localStorage.removeItem('userId')
