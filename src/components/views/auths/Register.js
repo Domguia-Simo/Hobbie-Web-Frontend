@@ -1,6 +1,7 @@
 import React,{useState}  from 'react'
 import {Link ,useNavigate} from 'react-router-dom'
 import request from '../../request/Request'
+import { ipAdress } from '../../../generals'
 
 const Register =()=>{
     let navigate = useNavigate()
@@ -20,7 +21,7 @@ const Register =()=>{
 
     const submit = async()=>{
         setLoading(true)
-        let temp = await request({method:'post' ,url:'http://localhost:5000/api/user/register' ,body:data})
+        let temp = await request({method:'post' ,url:`http://${ipAdress}:5000/api/user/register` ,body:data})
         console.log(temp)
             if(temp.message){
                 navigate('auths/login')

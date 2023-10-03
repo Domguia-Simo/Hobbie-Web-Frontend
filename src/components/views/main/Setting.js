@@ -20,6 +20,8 @@ const Setting =()=>{
             <div className='setting-body'>
                 <button>Theme</button>
                 <button>Lanuage</button>
+                <button>Feedback</button>
+
                 <button title='logout' onClick={logout}>Log-out</button>
             </div>
                 </center>

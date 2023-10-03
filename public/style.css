@@ -8,5 +8,7 @@
     padding: 0px;
 }
 body{
+    user-select: none;
+    user-zoom: none;
     margin:0px;
 }

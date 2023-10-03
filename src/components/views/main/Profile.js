@@ -26,9 +26,9 @@ const Profile =()=>{
                             </Link>
                         </button>
 
-                        <button>
+                        {/* <button>
                         <span className='fas fa-plus'></span> Create Story
-                        </button>
+                        </button> */}
 
                         <button>
                            <span className='fas fa-pen'></span> Edit Profile

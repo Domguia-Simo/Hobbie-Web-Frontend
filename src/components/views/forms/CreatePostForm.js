@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import { ipAdress } from '../../../generals'
 
 import '../../../assets/styleSheets/createPostStyles/createPostStyles.css'
 import request from '../../request/Request'
@@ -23,7 +24,7 @@ const sendPost=async()=>{
     }
     setLoading(true)
 
-        let temp = await request({method:'post',url:'http://localhost:5000/api/post/createPost',body:body})
+        let temp = await request({method:'post',url:`http://${ipAdress}:5000/api/post/createPost`,body:body})
             console.log(temp)
 
         let postId = temp.postId
@@ -33,7 +34,7 @@ const sendPost=async()=>{
         let formData = new FormData
             formData.append('file',file)
             console.log(formData)
-            fetch(`http://localhost:5000/api/post/uploadFile/${userId}/${postId}`,{
+            fetch(`http://${ipAdress}:5000/api/post/uploadFile/${userId}/${postId}`,{
                 method:'post',
                 body:formData
             })

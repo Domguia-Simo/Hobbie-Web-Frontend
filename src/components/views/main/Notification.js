@@ -91,7 +91,7 @@ function closeNotification(id){
 
 let displayNotification = notifications.map(notif => {
     return(
-        <div className='notification-body' key={notif.description}>
+        <div className='notification-body' key={notif.id}>
             <div>
                 <div className='notification-profile-picture'></div>
                 <div className='content'>
@@ -112,9 +112,9 @@ let displayNotification = notifications.map(notif => {
     return(
         <React.Fragment>
             <div className="notification">
-                {/* <br/> */}
+                <br/>
                     <h2>Notifications {notifications.length} </h2>
-                {/* <br/>  */}
+                <br/> 
                 {
                     displayNotification
                 }

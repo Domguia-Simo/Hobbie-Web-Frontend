@@ -49,7 +49,7 @@
     padding:12px 5px;
     height:30px;
     z-index:100;
-
+    overflow: hidden;
     h2{
         letter-spacing: 1px;
         color:$primaryColor;
@@ -92,5 +92,6 @@
     width:100%;
     font-size:large;
     font-weight: lighter;
+    overflow: hidden;
 
 }

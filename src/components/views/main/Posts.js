@@ -1,75 +1,36 @@
-import React,{useState,useMemo,useEffect} from 'react'
+import React,{useState,useMemo,useEffect,useRef ,useContext} from 'react'
+import { useNavigate } from 'react-router-dom'
 import NoAccount from '../modals/NoAccount'
 import request from '../../request/Request'
+import { ipAdress,stringDate } from '../../../generals'
+import Comment from './Comment'
 
+//context provider
+import { ThemeContext,PostContext } from '../../contextProvider/Provider'
+
+//styling sheet
 import '../../../assets/styleSheets/postStyles/postStyles.css'
 
-const posts = [
-    {
-        userName:'@Samuel_Escobar',
-        description:'To Be Continued ... ',
-        dateOfPublication:'02 Ferbuary 2023',
-        file:<img src={require('../../../assets/images/posts/R_2.jpg')}/>,
-        likeNumber:'10K',
-        commentNumber:'7K',
-        profilePicture:<img src={require('../../../assets/images/tempPp.jpg')} />
+const socketClient = require('socket.io-client')
 
-    },
-    {
-        userName:'@Sam_Douglas',
-        description:'Best Time Ever Anime !!!',
-        dateOfPublication:'02 Ferbuary 2023',
-        file:<img src={require('../../../assets/images/posts/OIP_14.jpg')}/>,
-        likeNumber:'10K',
-        commentNumber:'7K',
-        profilePicture:<img src={require('../../../assets/images/tempPp.jpg')} />
+const io = socketClient.io
 
-    },
-    {
-        userName:'@Simon',
-        description:'So hungry',
-        dateOfPublication:'02 Ferbuary 2023',
-        file:<img src={require('../../../assets/images/posts/f4.jpg')}/>,
-        likeNumber:'10K',
-        commentNumber:'7K',
-        profilePicture:<img src={require('../../../assets/images/tempPp.jpg')} />
+//socket connection with the server
+let socket = new io(`http://${ipAdress}:5000`)
 
-    },
-    {
-        userName:'@Stephan_Golberk',
-        description:'Who can but me this ?',
-        dateOfPublication:'02 Ferbuary 2023',
-        file:<img src={require('../../../assets/images/posts/f13.jpg')}/>,
-        likeNumber:'10K',
-        commentNumber:'7K',
-        profilePicture:<img src={require('../../../assets/images/tempPp.jpg')} />
-
-    },
-    {
-        userName:'@Simo_Ulrich',
-        description:'No other anime like this !!!',
-        dateOfPublication:'02 Ferbuary 2023',
-        file:<img src={require('../../../assets/images/posts/OIP_9.jpg')}/>,
-        likeNumber:'10K',
-        commentNumber:'7K',
-        profilePicture:<img src={require('../../../assets/images/tempPp.jpg')} />
-
-    },
-]
-
-const Posts = () => {
-
-    const [posts ,setPosts] = useState([])
+const Posts = ({InCommingposts}) => {
+  
+    const [posts ,setPosts] = useState(InCommingposts)
     const [NoAccountModal ,setNoAccountModal] = useState(false)
     const [user ,setUser] = useState(false)
+    const [playing ,setPlaying] = useState({video:{} ,e:''})
+    const [displayComment ,setDisplayComment] = useState([false,{}])
 
 useEffect(()=>{
-    const fetchData =async()=>{
-        let temp = await request({method:'GET' ,body:'',url:'http://localhost:5000/api/post/getAllPost'})
-        setPosts(temp.posts.reverse())
+    if(InCommingposts.length != 0){
+        setPosts(InCommingposts)
     }
-    fetchData()
-},[0])
+},[0,InCommingposts])
 
     useMemo(()=>{
         if(localStorage.getItem('userId')){
@@ -77,14 +38,34 @@ useEffect(()=>{
         }
     },[0])
 
+
     //Function to handle post Options 
-function handleOptions(){
+function handleOptions(id){
     if(!user){
         setNoAccountModal(true)
+        return
     }
-
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.option = !post.option
+        }
+        return post
+    })
+    setPosts(newPosts)
 }
-
+//To make disappear the post options
+// let postBody = document.querySelector('.full-post-body')
+// console.log(postBody)
+    // postBody.addEventListener('click',(e)=>{
+    //     // console.log(e.target)
+    //     if(e.target.className != 'options'){
+    //         let newPosts = posts.map(post => {
+    //                 post.option = false
+    //             return post
+    //         })
+    //         setPosts(newPosts)
+    //     }
+    // })
 
     //Function to handle post Like
 const handleLike=async(post)=>{
@@ -97,31 +78,29 @@ const handleLike=async(post)=>{
         likerName:localStorage.getItem('userName'),
         postId:post._id
     }
-    let id=post._id
-    // for(let i=0;i<100;i++){
-    //     request({method:'post' ,body:body,url:'http://localhost:5000/api/post/likePost'})
-    // }
-     let temp = await request({method:'post' ,body:body,url:'http://localhost:5000/api/post/likePost'})
-        if(temp.message == 'yes'){
-            let newPosts = posts.map(post => {
-                if(post._id == id){
-                    post.like.push({likerId:localStorage.getItem('userId'),likerName:localStorage.getItem('userName')})
-                }
-                return post
-            })
-            setPosts(newPosts)
-        }
+    socket.emit('like',body)
 
 }
+socket.on('liked',( {id ,newLike})=>{
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.like = newLike
+            post.liked = true
+        }
+        return post
+    })
+    setPosts(newPosts)
+})
 
-
-    //Function to handle post Like
-function handleComment(){
+    //Function to handle post comments
+const handleComment=async(post)=>{
     if(!user){
          setNoAccountModal(true)
          return
     }
+    setDisplayComment([true ,post,socket])
 }
+
 
 
     //Function to handle post Like
@@ -130,13 +109,6 @@ const handleDownload=async(post)=>{
          setNoAccountModal(true)
          return
     }
-
-    let body={
-        userId:post.userId,
-        postId:post._id,
-        fileName:post.fileName
-    }
-    await request({method:'post' ,body:body,url:'http://localhost:5000/api/post/downloadPost'})
 }
 
 
@@ -159,41 +131,220 @@ useMemo(()=>{
     }
 },[NoAccountModal])
 
+function shortText(text){
+    let newText = []
+
+    if(text.length > 200 ){
+        for(let i=0;i<text.length;i++){
+            if(i == 200){
+                break;
+            }
+            newText[i] = text[i]
+        }
+        return (
+            <>
+            {newText}
+            <strong onClick={()=>{}}>... Read More </strong>
+            </>
+            )
+    }
+
+return text
+}
+function longText(text){
+
+    if(text.length > 200 ){
+
+        return (
+            <>
+            {text}
+            <strong onClick={()=>{}}> Read Less </strong>
+            </>
+            )
+    }
+
+return text
+}
+
+//To show or hide the description of a  post
+function showFullText(id){
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.fullText = !post.fullText
+        }
+        return post
+    })
+    setPosts(newPosts)
+}
+
+function playVideo(e,post){
+    let id = post._id
+    console.log(playing)
+    if(playing.video._id){
+        console.log('another id playing')
+        pauseVideo(playing.e ,playing.video)
+    }
+    e.target.play()
+    setPlaying({video:post ,e:e})
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.playing = true
+        }
+        return post
+    })
+    setPosts(newPosts)
+}
+
+function pauseVideo(e ,post){
+    let id = post._id
+    e.target.pause()
+
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.playing = false
+        }
+        return post
+    })
+    setPosts(newPosts)
+    setPlaying({video:{},e:''})
+
+}
+
+function verifyFocus(e,post){
+let video = e.target
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+
+          } else {
+            pauseVideo(e,post);
+            setPlaying({video:{},e:''})
+          }
+        });
+      });
+        // Observe the video element.
+  observer.observe(video);
+}
+
+
+function displayFile(post){
+    let ext = post.fileName.split('.')
+    ext = ext[ext.length - 1]
+        ext = ext.toLowerCase()
+    
+    if(ext == 'jpg' || ext == 'png' || ext == 'gif' || ext == 'jpeg' || ext == 'bmp' || ext == 'webp' || ext == 'jfif'){
+        return  <img src={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>
+    }
+    else if(ext == 'mp4' || ext == 'avi' || ext == 'mpeg' || ext == 'ts' || ext == 'mkv'){
+        return (
+            <div className='video-container'>
+                    { <span style={{
+                        visibility: post._id == playing.video._id ? 'hidden':'visible'
+                    }} className='fas fa-play play-btn'></span>}
+                <video 
+                    src={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`} 
+                    width='100%' 
+                    autoFocus
+                    controls={post._id == playing.video._id}
+                    controlsList="nodownload"
+                    loop
+                    onClick={(e)=>playVideo(e,post)}
+                    onPlay={(e)=>verifyFocus(e,post)}
+                    // onFocus={(e)=>playVideo(e,post)}
+                    onBlur={(e)=>pauseVideo(e,post)}
+                >
+
+                </video>
+            </div>
+        )
+    }
+}
+
 
 let displayPosts = posts.map(post =>{
+    if(post.like.filter(like => like.likerId == localStorage.getItem('userId'))){
+        post.liked = true
+    }
     return(
-            <div className='post-container' key={post.description}>
+            <div className='post-container' key={post._id}>
                     
                 <div className='post-head'>
                     <div>
                         {<img src={require('../../../assets/images/tempPp.jpg')} />}
                         <div>
                             <span className='bold'>{post.userName}</span>
-                            <span className='light'>{stringDate(post.dateOfCreation)}</span>
+                            <span className=''>{stringDate(post.dateOfCreation)}</span>
                         </div>
                     </div>
-                    <span className='options' onClick={()=>handleOptions()}>...</span>
+                    <div style={{
+                        display:'flex',
+                        alignItems:'flex-end',
+                        columnGap:'12px'
+                    }}>
+                        <span style={{
+                            padding:'5px 7px',
+                            borderRadius:'5px',
+                            // border:'solid 1px black',
+                            color:'rgba(0,0,0,0.9)',
+                            backgroundColor:'white',
+                            fontWeight:'bold'
+
+                        }} >Follow</span>
+                        <span className='options' onClick={()=>handleOptions(post._id)}>...</span>
+                    </div>
+                    {
+                        post.option ? 
+                        <div className='post-options'>
+                            <span>View Profile</span>
+                            <span>Signal</span>
+                        </div>
+                             : ''
+                    }
                 </div>
 
                 <div className='post-body'>
                     <div className='content'>
-                    {<img src={`http://localhost:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>}
+                    {displayFile(post)}
 
                     </div>
+                    { post.description.length == 0 ? '':
                     <div className='description'>
-                    <span style={{color:'darkblue'}}> {post.userName}: </span>{post.description}
+                        
+                            
+                            <span style={{color:'darkblue'}}> {post.userName}: </span>
+                        
+                    {
+                        <>
+                        {
+                            post.fullText ? 
+                            <span onClick={()=>{showFullText(post._id)}}>
+                                {longText(post.description)}
+                            </span>  :
+                            <span onClick={()=>{showFullText(post._id)}}>
+                                {shortText(post.description)}
+                            </span>
+                         }
+                        </> 
+                    }
                     </div>
+                    }
                     <div className='actions'>
                         <div onClick={()=>handleLike(post)}>
-                        {post.like.length} <span className='fas fa-heart' style={{color:'rgba(255,0,0,0.6)'}}></span>
+                        {post.like.length} <span className={post.liked ? 'fas fa-heart':'far fa-heart'} style={{color:'rgba(255,0,0,0.6)'}}></span>
                         </div>
 
-                        <div onClick={()=>handleComment()}>
+                        <div onClick={()=>handleComment(post)}>
                         {post.comment.length} <span className='fas fa-comment' style={{color:'rgba(0,0,255,0.6)'}}></span>
                         </div>
 
                         <div onClick={()=>handleDownload(post)}>
+                            <a 
+                                href={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`} 
+                                download={true}
+                                target="_blank"
+                            >
                             <span className='fas fa-download' style={{color:'rgba(100,200,100,0.7)'}}></span>
+                            </a>
                         </div>
 
                         <div onClick={()=>handleShare()}>
@@ -213,57 +364,28 @@ let displayPosts = posts.map(post =>{
 
     return(
         <React.Fragment>
+            {
+                displayComment[0] ? 
+                    <Comment 
+                        displayComment={displayComment[1]} 
+                        setDisplayComment={setDisplayComment} 
+                        socket={displayComment[2]} 
+                        posts={posts} 
+                        setPosts={setPosts} 
+                    /> : ''
+            }
+             
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
-            {displayPosts}
+            <div className='full-post-body'>
+             {displayPosts}
+            </div>
             <br/>
+            
+            
         </React.Fragment>
     )
 }
 
 export default Posts
 
-function stringDate(date){
-    let goodDate = date.split('/')
-    let month = ''
-    switch(goodDate[1]){
-        case '1':
-            month='January'
-        break;    
-        case '2':
-            month='February'
-        break; 
-        case '3':
-            month='March'
-        break; 
-        case '4':
-            month='April'
-        break; 
-        case '5':
-            month='May'
-        break; 
-        case '6':
-            month='June'
-        break; 
-        case '7':
-            month='July'
-        break; 
-        case '8':
-            month='August'
-        break; 
-        case '9':
-            month='September'
-        break; 
-        case '10':
-            month='October'
-        break; 
-        case '11':
-            month='November'
-        break; 
-        case '12':
-            month='December'
-        break; 
-        
-    }
 
-    return goodDate[0]+' '+month+' '+goodDate[2]
-}

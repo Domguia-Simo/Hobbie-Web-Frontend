@@ -3,7 +3,10 @@ import Chat from './components/views/main/Chat'
 import Notification from './components/views/main/Notification'
 import Profile from './components/views/main/Profile'
 import Setting from './components/views/main/Setting'
+import Comment from './components/views/main/Comment'
+
 import CreatePostForm from './components/views/forms/CreatePostForm'
+
 
 //trying to make this component a seperate route without conditional rendering ,
 // so as to prodeuce a smooth navigation on mobile
@@ -13,6 +16,11 @@ const mainRoutes = [
     {
         path:'/posts',
         component:<DefaultView/>,
+        layout:'/home'
+    },
+    {
+        path:'/posts/comments',
+        component:<Comment/>,
         layout:'/home'
     },
     {

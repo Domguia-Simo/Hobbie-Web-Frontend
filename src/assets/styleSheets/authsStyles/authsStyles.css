@@ -3,12 +3,11 @@ body {
 }
 
 #auths {
-  background: linear-gradient(125deg, rgba(255, 136, 0, 0.302) 50%, #e6e6e6 50%);
+  background: linear-gradient(125deg, rgba(255, 136, 0, 0.302) 50%, rgb(230, 230, 230) 50%);
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
-  color: #141414;
+  color: rgb(20, 20, 20);
   font-family: "Ms sans serif";
   position: absolute;
   width: 100%;
@@ -16,7 +15,6 @@ body {
   letter-spacing: 1px;
   overflow: hidden;
 }
-
 #auths .back {
   padding: 25px 20px;
   color: black;
@@ -25,112 +23,71 @@ body {
   height: 30px;
   border: solid 1px transparent;
 }
-
 #auths .back:active {
   background-color: rgba(0, 0, 0, 0.1);
   border: solid 1px rgba(0, 0, 0, 0.1);
 }
-
 #auths-content {
   position: absolute;
   left: 50%;
   top: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   margin-top: -50px;
-}
-
-@-webkit-keyframes zoomOut {
-  0% {
-    -webkit-transform: scale(0.75);
-            transform: scale(0.75);
-    opacity: .1;
-  }
-  100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-    opacity: 1;
-  }
 }
 
 @keyframes zoomOut {
   0% {
-    -webkit-transform: scale(0.75);
-            transform: scale(0.75);
-    opacity: .1;
+    transform: scale(0.75);
+    opacity: 0.1;
   }
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    transform: scale(1);
     opacity: 1;
   }
 }
-
 .auths-box {
-  -webkit-animation: zoomOut 0.3s ease-in-out;
-          animation: zoomOut 0.3s ease-in-out;
+  animation: zoomOut 0.3s ease-in-out;
   overflow: hidden;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 30px 40px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   border: solid 1px grey;
   letter-spacing: 1px;
   border: 0;
   border-radius: 10px;
   overflow: hidden;
 }
-
 .auths-box hr {
   background-color: rgba(0, 0, 0, 0.2);
   height: 0.5px;
   width: 100%;
   border: 0;
 }
-
 .auths-box-title {
   margin-bottom: 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .auths-box-title h1 {
-  color: #ff8800;
+  color: rgb(255, 136, 0);
   margin: -30px -40px;
   margin-bottom: 5px;
   padding: 10px;
   margin-bottom: -15px;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
-
 .auths-box-button {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   width: 100%;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
+  justify-content: space-around;
   margin-bottom: 20px;
   margin-top: 5px;
 }
-
 .auths-box input {
   width: 275px;
   padding: 15px 20px;
@@ -141,46 +98,33 @@ body {
   border-radius: 20px;
   outline: none;
 }
-
-.auths-box input[type="submit"] {
+.auths-box input[type=submit] {
   color: white;
-  background-color: #0eda63;
+  background-color: rgb(14, 218, 99);
   font-size: 17px;
   border-radius: 15px;
-  -webkit-box-shadow: 1px 1px 3px grey;
-          box-shadow: 1px 1px 3px grey;
+  box-shadow: 1px 1px 3px grey;
   cursor: pointer;
   padding: 10px 20px;
   margin-bottom: -5px;
 }
-
 .auths-box-more {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  flex-direction: row;
+  justify-content: space-evenly;
   text-align: center;
   row-gap: 15px;
   margin-top: 15px;
   cursor: pointer;
 }
-
 .auths-box-more span {
   color: rgba(0, 0, 139, 0.6);
   border: solid 1px rgba(0, 0, 139, 0.7);
   padding: 5px 10px;
   border-radius: 10px;
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
-
 .auths-box-more a {
   text-decoration: none;
 }
@@ -193,5 +137,4 @@ body {
 .loader {
   width: 150px;
   margin-bottom: -20px;
-}
-/*# sourceMappingURL=authsStyles.css.map */
+}/*# sourceMappingURL=authsStyles.css.map */

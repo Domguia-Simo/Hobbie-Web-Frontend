@@ -1,5 +1,6 @@
 import React,{useState}  from 'react'
 import request from '../../request/Request'
+import { ipAdress } from '../../../generals'
 
 const Validate =()=>{
 
@@ -11,7 +12,7 @@ function handleChange(e){setCode(e.target.value)}
 
 const submit = async()=>{
     setLoading(true)
-    let temp = await request({method:'post',body:code ,url:'http://localhost'})
+    let temp = await request({method:'post',body:code ,url:`http://${ipAdress}`})
     setRespond(temp)
     console.log(respond)
     setLoading(false)

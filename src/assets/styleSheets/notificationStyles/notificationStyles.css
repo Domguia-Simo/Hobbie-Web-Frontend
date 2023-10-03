@@ -3,25 +3,14 @@
   margin-top: 54px;
   width: 100%;
   padding: 0px 10px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   padding-bottom: 50px;
 }
-
 .notification-body {
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  justify-content: space-between;
   border: solid 1px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
-          box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
-  display: -webkit-box;
-  display: -ms-flexbox;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   width: 86%;
   margin-bottom: 7px;
@@ -29,49 +18,34 @@
   padding: 12px;
   border-radius: 20px;
 }
-
 .notification-body div:first-child {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-column-gap: 7px;
-          column-gap: 7px;
+  -moz-column-gap: 7px;
+       column-gap: 7px;
 }
-
 .notification-body .notification-profile-picture {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  background-color: #a4eba4;
+  background-color: rgb(164, 235, 164);
 }
-
 .notification-body .content {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
-
 .notification-body .notification-close {
   font-size: large;
   border: solid 1px transparent;
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 5px;
   border-radius: 20px;
   background-color: transparent;
 }
-
 .notification-body .notification-close:active {
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
   padding: 5px;
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.1);
-}
-/*# sourceMappingURL=notificationStyles.css.map */
+}/*# sourceMappingURL=notificationStyles.css.map */

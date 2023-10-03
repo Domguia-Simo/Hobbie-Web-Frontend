@@ -1,5 +1,10 @@
-import React,{useState ,useMemo} from 'react'
+import React,{useState ,useMemo ,useContext } from 'react'
 import {Link } from 'react-router-dom'
+
+//context Provider
+import { ThemeContext } from '../contextProvider/Provider'
+
+//styleing sheet
 import '../../assets/styleSheets/headerStyles/headerStyles.css'
 
 export const Header =()=>{
@@ -43,9 +48,9 @@ useMemo(()=>{
                     <span className='far fa-user' title='account' onClick={()=>setActive('user')} id={active == 'user' ? 'active':''} ></span>
                 </Link>
 
-                <Link to='/home/chat'> 
+                {/* <Link to='/home/chat'> 
                     <span className='far fa-message' title='messages' onClick={()=>setActive('message')} id={active == 'message' ? 'active':''} ></span> 
-                </Link>
+                </Link> */}
 
                 <Link to='/home/notification'> 
                     <span className='far fa-bell' title='notification' onClick={()=>setActive('notification')} id={active == 'notification' ? 'active':''} ></span> 

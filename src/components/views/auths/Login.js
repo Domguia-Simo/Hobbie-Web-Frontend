@@ -1,6 +1,7 @@
 import React,{useState}  from 'react'
 import {Link,useNavigate} from 'react-router-dom'
 import request from '../../request/Request'
+import { ipAdress } from '../../../generals'
 
 const Login =()=>{
     let navigate = useNavigate()
@@ -17,7 +18,7 @@ function handleChange(e){
 }
 const submit = async()=>{
     setLoading(true)
-    let temp = await request({method:'post' ,body:data,url:'http://localhost:5000/api/user/login'})
+    let temp = await request({method:'post' ,body:data,url:`http://${ipAdress}:5000/api/user/login`})
     console.log(temp)
     if(temp.id){
         localStorage.removeItem('userId')
