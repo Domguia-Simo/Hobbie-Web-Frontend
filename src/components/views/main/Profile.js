@@ -2,8 +2,10 @@ import React,{useState} from 'react'
 import {Link} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
+import { ipAdress } from '../../../generals'
 
 const Profile =()=>{
+    
     const [body ,setBody] = useState('posts')
 
     return(
@@ -11,8 +13,24 @@ const Profile =()=>{
             <div className='profile'>
 
                 <div className='profile-bg'>
-                    <div className='profile-picture'></div>
+                    {localStorage.getItem('profileBackground') != 'no' ? 
+                        <img 
+                        src={`http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${localStorage.getItem('profileBackground')}`}
+                        className='profile-bg'
+                        />
+                        :''
+                    }
                 </div>
+                    <div >
+                        {localStorage.getItem('profilePicture') != 'no'  ? 
+                       
+                        <img 
+                        src={`http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${localStorage.getItem('profilePicture')}`}
+                        className='profile-picture'
+                        /> :
+                        <img src={require('../../../assets/images/tempPp.jpg')} className='profile-picture'/>
+                        }
+                    </div>
                 <br/>
                 <br/>
 
@@ -31,7 +49,9 @@ const Profile =()=>{
                         </button> */}
 
                         <button>
-                           <span className='fas fa-pen'></span> Edit Profile
+                            <Link to='/home/profile/editProfile'>
+                                <span className='fas fa-pen'></span> Edit Profile
+                            </Link>
                         </button>
                     </div>
                 </div>

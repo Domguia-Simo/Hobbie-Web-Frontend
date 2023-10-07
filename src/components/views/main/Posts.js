@@ -26,6 +26,8 @@ const Posts = ({InCommingposts}) => {
     const [playing ,setPlaying] = useState({video:{} ,e:''})
     const [displayComment ,setDisplayComment] = useState([false,{}])
 
+    const [scrollY ,setScrollY] = useState(0)
+
 useEffect(()=>{
     if(InCommingposts.length != 0){
         setPosts(InCommingposts)
@@ -53,32 +55,18 @@ function handleOptions(id){
     })
     setPosts(newPosts)
 }
-//To make disappear the post options
-// let postBody = document.querySelector('.full-post-body')
-// console.log(postBody)
-    // postBody.addEventListener('click',(e)=>{
-    //     // console.log(e.target)
-    //     if(e.target.className != 'options'){
-    //         let newPosts = posts.map(post => {
-    //                 post.option = false
-    //             return post
-    //         })
-    //         setPosts(newPosts)
-    //     }
-    // })
 
-    //Function to handle post Like
 const handleLike=async(post)=>{
     if(!user){
          setNoAccountModal(true)
          return
     }
-    let body={
-        likerId:localStorage.getItem('userId'),
-        likerName:localStorage.getItem('userName'),
-        postId:post._id
-    }
-    socket.emit('like',body)
+        let body={
+            likerId:localStorage.getItem('userId'),
+            likerName:localStorage.getItem('userName'),
+            postId:post._id
+        }
+        socket.emit('like',body)
 
 }
 socket.on('liked',( {id ,newLike})=>{
@@ -86,6 +74,16 @@ socket.on('liked',( {id ,newLike})=>{
         if(post._id == id){
             post.like = newLike
             post.liked = true
+        }
+        return post
+    })
+    setPosts(newPosts)
+})
+socket.on('unLiked',( {id ,newLike})=>{
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.like = newLike
+            post.liked = false
         }
         return post
     })
@@ -101,8 +99,6 @@ const handleComment=async(post)=>{
     setDisplayComment([true ,post,socket])
 }
 
-
-
     //Function to handle post Like
 const handleDownload=async(post)=>{
     if(!user){
@@ -111,7 +107,6 @@ const handleDownload=async(post)=>{
     }
 }
 
-
     //Function to handle post Like
 function handleShare(){
     if(!user){
@@ -119,7 +114,6 @@ function handleShare(){
          return
     }
 }
-
 
 //to disable the modal after a few second
 useMemo(()=>{
@@ -226,6 +220,29 @@ let video = e.target
   observer.observe(video);
 }
 
+function closePost(post){
+    let id = post._id
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.display = 'none'
+        }
+        return post
+    })
+    setPosts(newPosts)
+}
+
+async function followUser(post){
+
+    console.log(post.userId)
+    let body={
+        userId:localStorage.getItem('userId'),
+        followingId : post.userId
+    }
+    let temp = await request({url:`http://${ipAdress}:5000/api/userAction/followUser`,method:'post',body:body})
+        console.log(temp)
+
+}
+
 
 function displayFile(post){
     let ext = post.fileName.split('.')
@@ -233,7 +250,9 @@ function displayFile(post){
         ext = ext.toLowerCase()
     
     if(ext == 'jpg' || ext == 'png' || ext == 'gif' || ext == 'jpeg' || ext == 'bmp' || ext == 'webp' || ext == 'jfif'){
-        return  <img src={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>
+        return  (
+                <img src={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>
+            )
     }
     else if(ext == 'mp4' || ext == 'avi' || ext == 'mpeg' || ext == 'ts' || ext == 'mkv'){
         return (
@@ -260,17 +279,28 @@ function displayFile(post){
     }
 }
 
-
 let displayPosts = posts.map(post =>{
-    if(post.like.filter(like => like.likerId == localStorage.getItem('userId'))){
-        post.liked = true
-    }
+
+        for(let i =0;i<post.like.length;i++){
+            if(post.like[i].likerId == localStorage.getItem('userId')){
+                post.liked = true
+                break;
+            }
+        }
+        if(post.display == 'none'){
+            return
+        }
+
     return(
-            <div className='post-container' key={post._id}>
+            <div className='post-container' key={post._id} >
                     
                 <div className='post-head'>
                     <div>
-                        {<img src={require('../../../assets/images/tempPp.jpg')} />}
+                        {post.profilePicture ? 
+                            <img src={`http://${ipAdress}:5000/userPictures/${post.profilePicture}`} />
+                        :
+                        <img src={require('../../../assets/images/tempPp.jpg')} />
+                        }
                         <div>
                             <span className='bold'>{post.userName}</span>
                             <span className=''>{stringDate(post.dateOfCreation)}</span>
@@ -284,13 +314,25 @@ let displayPosts = posts.map(post =>{
                         <span style={{
                             padding:'5px 7px',
                             borderRadius:'5px',
-                            // border:'solid 1px black',
                             color:'rgba(0,0,0,0.9)',
                             backgroundColor:'white',
-                            fontWeight:'bold'
+                            fontWeight:'bold',
+                            display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
-                        }} >Follow</span>
-                        <span className='options' onClick={()=>handleOptions(post._id)}>...</span>
+                        }} 
+                            onClick={()=>followUser(post)}
+                        >Follow</span>
+                        <span 
+                        className='options' 
+                        onClick={()=>handleOptions(post._id)}
+                        style={{display:localStorage.getItem('userId') == post.userId ? 'none' : ''}}
+                        >...</span>
+
+                        <span 
+                        className='fas fa-close options' 
+                        onClick={()=>closePost(post)}
+                        style={{display:localStorage.getItem('userId') == post.userId ? '' : 'none'}}
+                        ></span>
                     </div>
                     {
                         post.option ? 
@@ -311,7 +353,7 @@ let displayPosts = posts.map(post =>{
                     <div className='description'>
                         
                             
-                            <span style={{color:'darkblue'}}> {post.userName}: </span>
+                        <span style={{color:'darkblue'}}> {post.userName}: </span>
                         
                     {
                         <>
@@ -338,13 +380,9 @@ let displayPosts = posts.map(post =>{
                         </div>
 
                         <div onClick={()=>handleDownload(post)}>
-                            <a 
-                                href={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`} 
-                                download={true}
-                                target="_blank"
-                            >
+                           
                             <span className='fas fa-download' style={{color:'rgba(100,200,100,0.7)'}}></span>
-                            </a>
+                            
                         </div>
 
                         <div onClick={()=>handleShare()}>

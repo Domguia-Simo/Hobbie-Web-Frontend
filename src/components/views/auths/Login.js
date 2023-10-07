@@ -24,6 +24,8 @@ const submit = async()=>{
         localStorage.removeItem('userId')
         localStorage.setItem('userId',temp.id)
         localStorage.setItem('userName',temp.userName)
+        localStorage.setItem('profilePicture',temp.profilePicture)
+        localStorage.setItem('profileBackground',temp.profileBackground)
 
         navigate('/home/post');
     }

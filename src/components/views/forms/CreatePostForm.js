@@ -20,7 +20,8 @@ const sendPost=async()=>{
         userId:localStorage.getItem('userId'),
         description:description,
         dateOfCreation:date,
-        userName:localStorage.getItem('userName')
+        userName:localStorage.getItem('userName'),
+        profilePicture:localStorage.getItem('profilePicture')
     }
     setLoading(true)
 

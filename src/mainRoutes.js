@@ -6,6 +6,7 @@ import Setting from './components/views/main/Setting'
 import Comment from './components/views/main/Comment'
 
 import CreatePostForm from './components/views/forms/CreatePostForm'
+import EditProfile from './components/views/forms/EditProfileForm'
 
 
 //trying to make this component a seperate route without conditional rendering ,
@@ -52,6 +53,11 @@ const mainRoutes = [
     {
         path:'/profile/createPost',
         component:<CreatePostForm/>,
+        layout:'/home'
+    },
+    {
+        path:'/profile/editProfile',
+        component:<EditProfile/>,
         layout:'/home'
     }
 ]
