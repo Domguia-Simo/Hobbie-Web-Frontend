@@ -8,7 +8,6 @@
   padding: 10px;
 }
 .edit-form .file {
-  margin-top: -15px;
   display: flex;
   flex-direction: column;
   row-gap: 7px;

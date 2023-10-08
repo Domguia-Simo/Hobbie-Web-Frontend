@@ -39,14 +39,14 @@ const Profile =()=>{
                     <div>
                         
                         <button>
+                        <span className='fas fa-plus'></span> Create Story
+                        </button>
+
+                        <button>
                             <Link to='/home/profile/createPost'>
                                 <span className='fas fa-plus'></span> Create Post
                             </Link>
                         </button>
-
-                        {/* <button>
-                        <span className='fas fa-plus'></span> Create Story
-                        </button> */}
 
                         <button>
                             <Link to='/home/profile/editProfile'>

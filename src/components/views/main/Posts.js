@@ -233,6 +233,9 @@ function closePost(post){
 
 async function followUser(post){
 
+        if(post.following){
+            return
+        }
     console.log(post.userId)
     let body={
         userId:localStorage.getItem('userId'),
@@ -240,6 +243,8 @@ async function followUser(post){
     }
     let temp = await request({url:`http://${ipAdress}:5000/api/userAction/followUser`,method:'post',body:body})
         console.log(temp)
+        let newFollowing = localStorage.getItem('following').push(post.userId)
+        localStorage.setItem('following',newFollowing)
 
 }
 
@@ -278,7 +283,6 @@ function displayFile(post){
         )
     }
 }
-
 let displayPosts = posts.map(post =>{
 
         for(let i =0;i<post.like.length;i++){
@@ -287,9 +291,20 @@ let displayPosts = posts.map(post =>{
                 break;
             }
         }
+
+        post.following = false
+        let following = localStorage.getItem('following').split(',')
+        for(let i =0;i<following.length;i++){
+            if(following[i] == post.userId){
+                post.following = true
+                break;
+            }
+        }
+
         if(post.display == 'none'){
             return
         }
+        // console.log(post.following)
 
     return(
             <div className='post-container' key={post._id} >
@@ -311,17 +326,24 @@ let displayPosts = posts.map(post =>{
                         alignItems:'flex-end',
                         columnGap:'12px'
                     }}>
+                
                         <span style={{
                             padding:'5px 7px',
                             borderRadius:'5px',
-                            color:'rgba(0,0,0,0.9)',
+                            color:post.following ? 'rgba(0,0,0,0.4)':'rgba(0,0,0,0.9)',
                             backgroundColor:'white',
                             fontWeight:'bold',
                             display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
                         }} 
                             onClick={()=>followUser(post)}
-                        >Follow</span>
+                        >
+                           {
+                            post.following ? 'Following' : 'Follow'
+                           } 
+                        </span> 
+                        
+
                         <span 
                         className='options' 
                         onClick={()=>handleOptions(post._id)}

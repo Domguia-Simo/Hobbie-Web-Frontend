@@ -26,6 +26,7 @@ const submit = async()=>{
         localStorage.setItem('userName',temp.userName)
         localStorage.setItem('profilePicture',temp.profilePicture)
         localStorage.setItem('profileBackground',temp.profileBackground)
+        localStorage.setItem('following' ,temp.following)
 
         navigate('/home/post');
     }
