@@ -6,7 +6,7 @@ import { ipAdress,stringDate } from '../../../generals'
 import Comment from './Comment'
 
 //context provider
-import { ThemeContext,PostContext } from '../../contextProvider/Provider'
+import { ThemeContext } from '../../contextProvider/Provider'
 
 //styling sheet
 import '../../../assets/styleSheets/postStyles/postStyles.css'
@@ -26,7 +26,7 @@ const Posts = ({InCommingposts}) => {
     const [playing ,setPlaying] = useState({video:{} ,e:''})
     const [displayComment ,setDisplayComment] = useState([false,{}])
 
-    const [scrollY ,setScrollY] = useState(0)
+let theme = useContext(ThemeContext).theme
 
 useEffect(()=>{
     if(InCommingposts.length != 0){
@@ -285,7 +285,7 @@ function displayFile(post){
 }
 
 function closeOptions(e){
-    console.log(e.target.className)
+    // console.log(e.target.className)
     if(e.target.className != 'options'){
         let newPosts = posts.map(post => {
                 post.option = false
@@ -323,7 +323,7 @@ let displayPosts = posts.map(post =>{
         // console.log(post.following)
 
     return(
-            <div className='post-container' key={post._id}  >
+            <div className='post-container' key={post._id}  style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'',color:theme == 'dark'?'white':''}} >
                     
                 <div className='post-head'>
                     <div>
@@ -333,7 +333,7 @@ let displayPosts = posts.map(post =>{
                         <img src={require('../../../assets/images/tempPp.jpg')} />
                         }
                         <div>
-                            <span className='bold'>{post.userName}</span>
+                            <span className='bold' style={{letterSpacing:'1.5px'}}>{post.userName}</span>
                             <span className=''>{stringDate(post.dateOfCreation)}</span>
                         </div>
                     </div>
@@ -346,8 +346,8 @@ let displayPosts = posts.map(post =>{
                         <span style={{
                             padding:'5px 7px',
                             borderRadius:'5px',
-                            color:post.following ? 'rgba(0,0,0,0.4)':'rgba(0,0,0,0.9)',
-                            backgroundColor:'white',
+                            color:post.following ? theme ==  'dark' ? 'rgba(255,255,255,0.5)':'rgba(0,0,0,0.4)': theme ==  'dark' ? 'rgba(255,255,255,0.8)':'rgba(0,0,0,0.9)',
+                            // backgroundColor:'white',
                             fontWeight:'bold',
                             display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
@@ -374,7 +374,7 @@ let displayPosts = posts.map(post =>{
                     </div>
                     {
                         post.option ? 
-                        <div className='post-options'>
+                        <div className='post-options' style={{backgroundColor:theme == 'dark' ? 'rgba(50,50,50,1)':''}}>
                             <span>View Profile</span>
                             <span>Signal</span>
                         </div>
@@ -388,10 +388,10 @@ let displayPosts = posts.map(post =>{
 
                     </div>
                     { post.description.length == 0 ? '':
-                    <div className='description'>
+                    <div className='description'  style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}>
                         
                             
-                        <span style={{color:'darkblue'}}> {post.userName}: </span>
+                        <span style={{color:theme == 'dark' ? 'rgb(255, 136, 0)':'darkblue'}} > {post.userName}: </span>
                         
                     {
                         <>
@@ -408,23 +408,23 @@ let displayPosts = posts.map(post =>{
                     }
                     </div>
                     }
-                    <div className='actions'>
-                        <div onClick={()=>handleLike(post)}>
+                    <div className='actions' style={{borderTop:theme == 'dark' ? 'solid 1px rgba(255,255,255,0.1)':''}} >
+                        <div onClick={()=>handleLike(post)}  style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}>
                         {post.like.length} <span className={post.liked ? 'fas fa-heart':'far fa-heart'} style={{color:'rgba(255,0,0,0.6)'}}></span>
                         </div>
 
-                        <div onClick={()=>handleComment(post)}>
-                        {post.comment.length} <span className='fas fa-comment' style={{color:'rgba(0,0,255,0.6)'}}></span>
+                        <div onClick={()=>handleComment(post)} style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}>
+                        {post.comment.length} <span className='fas fa-comment' style={{color:theme ==  'dark'? 'skyblue':'rgba(0,0,255,0.6)'}}></span>
                         </div>
 
-                        <div onClick={()=>handleDownload(post)}>
+                        <div onClick={()=>handleDownload(post)} >
                            
                             <span className='fas fa-download' style={{color:'rgba(100,200,100,0.7)'}}></span>
                             
                         </div>
 
                         <div onClick={()=>handleShare()}>
-                            <span className='fas fa-share' style={{color:'rgba(0,0,0,0.6)'}}></span>
+                            <span className='fas fa-share' style={{color:theme == 'dark' ?'rgba(255,255,255,0.7)': 'rgba(0,0,0,0.6)'}}></span>
                         </div>
 
                     </div>

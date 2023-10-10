@@ -1,12 +1,16 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, useContext} from 'react'
 import { ipAdress ,stringDate } from '../../../generals'
 import request from '../../request/Request'
 
 import '../../../assets/styleSheets/commentStyles/commentStyles.css'
+import { ThemeContext } from '../../contextProvider/Provider'
 
 const Comment =({displayComment ,setDisplayComment,socket,posts,setPosts})=>{
     const [comments, setComments] = useState(displayComment.comment.reverse())
     const [commentText ,setCommentText] = useState('')
+
+const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+let theme = useContext(ThemeContext).theme
 
 let displayComments = []
 if(comments.length != 0){
@@ -14,7 +18,12 @@ if(comments.length != 0){
         return (
             <div className='comment-body' key={comment.comment + comment.dateOfComment + Date.now()}>
                 <div className='comment-profile-picture'>
-                    <img src={require('../../../assets/images/tempPp.jpg')} />
+                    {
+                        // profilePicture != 'no' ?
+                        // <img src={profilePicture} />
+                        // :
+                        <img src={require('../../../assets/images/tempPp.jpg')} />
+                    }
                 </div>
                 <div className='comment-content'>
                     <span>{comment.userName}</span>
@@ -62,7 +71,7 @@ socket.on('commented',({id ,newComment})=>{
 
     return(
         <React.Fragment>
-            <div className='comment-container'>
+            <div className='comment-container' style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'' ,color:theme == 'dark' ? 'white':""}}>
                 {/* <br/> */}
                 <h2 style={{
                     display:'flex',
@@ -71,11 +80,11 @@ socket.on('commented',({id ,newComment})=>{
                 }}><span className='fas fa-arrow-left' onClick={()=>setDisplayComment([false,{}])}></span> Comments &nbsp;&nbsp; {comments.length}</h2>
                 {/* <br/> */}
 
-                <div className='comments'>
+                <div className='comments' style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'' ,color:theme == 'dark' ? 'black':""}}>  
                     {displayComments}
                 </div>
 
-                <div className='form'>
+                <div className='form' style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'' ,color:theme == 'dark' ? 'white':""}}>
 
                     <form 
                     onSubmit={(e)=>sendComment(e)}

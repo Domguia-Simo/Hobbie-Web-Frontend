@@ -10,7 +10,7 @@ import request from '../request/Request'
 import DefaultView from '../views/main/Default'
 
 //Context Provider
-import { ThemeProvider ,PostProvider} from '../contextProvider/Provider'
+import { ThemeContext, ThemeProvider } from '../contextProvider/Provider'
 
 
 //Styling sheet

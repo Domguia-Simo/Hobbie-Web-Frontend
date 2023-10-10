@@ -116,7 +116,7 @@ const submit = async()=>{
                 <div className='auths-box-button'>
                     <input
                         type="submit"
-                        value="Login"
+                        value="Log in"
                         onClick={submit}
                       />
                 </div>

@@ -11,6 +11,8 @@ export const Header =()=>{
     const [active ,setActive] = useState('home')
     const [user ,setUser] = useState(false)
 
+let theme = useContext(ThemeContext).theme
+
 let path = window.location.pathname.split('/')
 path = path[path.length-1]
 useMemo(()=>{
@@ -35,28 +37,28 @@ useMemo(()=>{
 
     return(
     <React.Fragment>
-    <div className='header'>
+    <div className='header' style={{backgroundColor:theme == 'dark' ? 'rgba(50,50,52,1)':''}}>
         <h2> Hobbie </h2>
 
         {user ? 
-            <div className='options'>
-                <Link to='/home/posts'> 
+            <div className='options' >
+                <Link to='/home/posts' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='fas fa-home' title='home' onClick={()=>setActive('home')} id={active == 'home' ? 'active':''} ></span>
                 </Link>
 
-                <Link to='/home/profile'>
+                <Link to='/home/profile' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}>
                     <span className='far fa-user' title='account' onClick={()=>setActive('user')} id={active == 'user' ? 'active':''} ></span>
                 </Link>
 
-                {/* <Link to='/home/chat'> 
+                {/* <Link to='/home/chat' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='far fa-message' title='messages' onClick={()=>setActive('message')} id={active == 'message' ? 'active':''} ></span> 
                 </Link> */}
 
-                <Link to='/home/notification'> 
+                <Link to='/home/notification' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='far fa-bell' title='notification' onClick={()=>setActive('notification')} id={active == 'notification' ? 'active':''} ></span> 
                 </Link>
 
-                <Link to='/home/setting'> 
+                <Link to='/home/setting' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='fas fa-bars' title='option' onClick={()=>setActive('option')} id={active == 'option' ? 'active':''} ></span> 
                 </Link>
 
@@ -89,6 +91,8 @@ let category = [
 export const Category =()=>{
     const [activeCat ,setActiveCat] = useState('General')
 
+    let theme = useContext(ThemeContext).theme
+
 let displayCategory = category.map(cat => {
     return (
 
@@ -98,6 +102,7 @@ let displayCategory = category.map(cat => {
         key={cat} 
         onClick={()=>setActiveCat(`${cat}`)} 
         id={activeCat == cat ? 'activeCat':''}
+        style={{backgroundColor:theme == 'dark' ? 'rgba(255,255,255,0.85)':'',color:theme == 'dark' ? 'black':''}}
     >
         {cat}
     </span>
@@ -106,7 +111,7 @@ let displayCategory = category.map(cat => {
 
     return(
         <React.Fragment>
-        <div className='category'>
+        <div className='category' style={{backgroundColor:theme == 'dark' ? 'rgba(50,50,52,1)':''}} >
             {displayCategory}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         </React.Fragment>
@@ -114,12 +119,13 @@ let displayCategory = category.map(cat => {
 }
 
 export const FixFoot =()=>{
+    let theme = useContext(ThemeContext).theme
     return(
         <React.Fragment>
-            <div className='fixfoot'>
-                <span className='fas fa-user-friends'></span>
-                <span className='fas fa-search'></span>
-                <span className='fas fa-gift'></span>
+            <div className='fixfoot' style={{backgroundColor:theme == 'dark' ? 'rgba(50,50,52,1)':''}}>
+                <span className='fas fa-user-friends' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
+                <span className='fas fa-search' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
+                <span className='fas fa-gift' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
 
             </div>
         </React.Fragment>

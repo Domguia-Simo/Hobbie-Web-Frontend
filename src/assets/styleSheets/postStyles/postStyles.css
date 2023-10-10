@@ -1,7 +1,7 @@
 .post-container {
   width: 100%;
   background-color: white;
-  margin-top: 10px;
+  margin-top: 7px;
   display: flex;
   flex-direction: column;
   font-size: 0.9em;
@@ -103,7 +103,7 @@
 .post-body .content video {
   margin-top: -44px;
   max-height: 450px;
-  background-color: rgba(0, 0, 0, 0.95);
+  background-color: rgb(8, 8, 8);
 }
 .post-body .content img {
   width: 100%;

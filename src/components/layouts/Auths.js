@@ -9,14 +9,12 @@ const Auths = ()=> {
 let routes = authsRoutes.map(route => {
     return <Route path={`${route.path}`} element={route.component} key={route.path} />
 })
-
+let navigate = useNavigate()
     return(
         <React.Fragment>
 
            <div id="auths">
-            <Link to='/home'>
-                <span className='fas fa-long-arrow-left back'></span>
-            </Link>
+                <span className='fas fa-long-arrow-left back' onClick={()=>navigate(-1)}></span>
             <div id='auths-content'>
                 {
                     <Routes>
