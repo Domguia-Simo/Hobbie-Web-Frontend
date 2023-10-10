@@ -5,13 +5,23 @@
   flex-direction: column;
   row-gap: 10px;
   width: 100%;
-  padding: 10px;
+  padding: 0px;
+}
+.edit-form h3, .edit-form h2 {
+  padding-left: 10px;
 }
 .edit-form .file {
   display: flex;
   flex-direction: column;
   row-gap: 7px;
   align-items: center;
+  padding-left: -10px;
+}
+.edit-form .file .rounded {
+  width: 225px;
+  height: 225px;
+  border: solid 1px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
 }
 .edit-form .file .fa-image {
   height: -moz-fit-content;
@@ -31,18 +41,26 @@
   border-radius: 10px;
   font-size: large;
 }
+.edit-form .file-actions {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 7px;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.3);
+}
 .edit-form div textarea {
   width: 85%;
   height: 100px;
   border-radius: 20px;
   border: solid 1px rgba(0, 0, 0, 0.2);
   padding: 10px;
+  margin-left: 10px;
   font-size: large;
 }
 .edit-form div input[type=text] {
   padding: 10px 5px;
   border-radius: 5px;
   width: 250px;
+  margin-left: 10px;
   border: solid 1px rgba(0, 0, 0, 0.2);
 }
 .edit-form .post-button {

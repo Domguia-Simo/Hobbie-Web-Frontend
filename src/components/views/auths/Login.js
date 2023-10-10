@@ -24,9 +24,49 @@ const submit = async()=>{
         localStorage.removeItem('userId')
         localStorage.setItem('userId',temp.id)
         localStorage.setItem('userName',temp.userName)
-        localStorage.setItem('profilePicture',temp.profilePicture)
-        localStorage.setItem('profileBackground',temp.profileBackground)
         localStorage.setItem('following' ,temp.following)
+        localStorage.setItem('follower',temp.follower)
+
+        //Storing some files in the localstorage
+        //Saving locally th user's profile picture
+        const reader = new FileReader()
+        if(temp.profilePicture != 'no'){
+            console.log('convert')
+            let url = `http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${temp.profilePicture}`
+    
+            const xhr1 = new XMLHttpRequest()
+            xhr1.responseType = 'blob'
+            xhr1.open('GET',url)
+            xhr1.send()
+    
+            xhr1.onload =() =>{
+                 reader.onload = () =>{
+                     localStorage.setItem('profilePicture',JSON.stringify({name:temp.profilePicture ,file:reader.result}))
+                 }
+                 reader.readAsDataURL(xhr1.response)
+            }
+        }else{
+            localStorage.setItem('profilePicture',JSON.stringify({name:temp.profilePicture ,file:temp.profilePicture}))
+        }
+
+        //Saving locally the profile background image
+        if(temp.profileBackground != 'no'){
+            let url2 = `http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${temp.profileBackground}`
+            const xhr2 = new XMLHttpRequest()
+            xhr2.responseType = 'blob'
+            xhr2.open('GET',url2)
+            xhr2.send()
+                const reader2 = new FileReader()
+
+            xhr2.onload =()=>{
+                reader2.onload =() =>{
+                    localStorage.setItem('profileBackground',JSON.stringify({name:temp.profileBackground,file:reader2.result}))
+                }
+                reader2.readAsDataURL(xhr2.response)
+            }
+        }else{
+            localStorage.setItem('profileBackground',JSON.stringify({name:temp.profileBackground ,file:temp.profileBackground}))
+        }
 
         navigate('/home/post');
     }

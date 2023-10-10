@@ -243,7 +243,7 @@ async function followUser(post){
     }
     let temp = await request({url:`http://${ipAdress}:5000/api/userAction/followUser`,method:'post',body:body})
         console.log(temp)
-        let newFollowing = localStorage.getItem('following').push(post.userId)
+        let newFollowing = localStorage.getItem('following').split(',').push(post.userId)
         localStorage.setItem('following',newFollowing)
 
 }
@@ -283,6 +283,19 @@ function displayFile(post){
         )
     }
 }
+
+function closeOptions(e){
+    console.log(e.target.className)
+    if(e.target.className != 'options'){
+        let newPosts = posts.map(post => {
+                post.option = false
+            return post
+        })
+        setPosts(newPosts)
+    }
+}
+
+
 let displayPosts = posts.map(post =>{
 
         for(let i =0;i<post.like.length;i++){
@@ -293,11 +306,14 @@ let displayPosts = posts.map(post =>{
         }
 
         post.following = false
-        let following = localStorage.getItem('following').split(',')
-        for(let i =0;i<following.length;i++){
-            if(following[i] == post.userId){
-                post.following = true
-                break;
+        if(localStorage.getItem('following')){
+
+            let following = localStorage.getItem('following').split(',')
+            for(let i =0;i<following.length;i++){
+                if(following[i] == post.userId){
+                    post.following = true
+                    break;
+                }
             }
         }
 
@@ -307,7 +323,7 @@ let displayPosts = posts.map(post =>{
         // console.log(post.following)
 
     return(
-            <div className='post-container' key={post._id} >
+            <div className='post-container' key={post._id}  >
                     
                 <div className='post-head'>
                     <div>
@@ -436,7 +452,7 @@ let displayPosts = posts.map(post =>{
             }
              
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
-            <div className='full-post-body'>
+            <div className='full-post-body' onClick={(e)=>closeOptions(e)}>
              {displayPosts}
             </div>
             <br/>

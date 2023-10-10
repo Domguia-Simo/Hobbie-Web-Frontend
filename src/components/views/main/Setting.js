@@ -7,7 +7,8 @@ const Setting =()=>{
     let navigate = useNavigate()
 
     const logout=()=>{
-        localStorage.removeItem('userId')
+        // localStorage.removeItem('userId')
+        localStorage.clear()
         window.location.pathname='/home/posts'
 }
 

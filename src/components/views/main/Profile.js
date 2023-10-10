@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import {Link} from 'react-router-dom'
+import {Link ,useLocation} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
@@ -8,24 +8,28 @@ const Profile =()=>{
     
     const [body ,setBody] = useState('posts')
 
+// console.log(JSON.parse(localStorage.getItem('profileBackground')))
+
+const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
+const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
     return(
         <React.Fragment>
             <div className='profile'>
 
                 <div className='profile-bg'>
-                    {localStorage.getItem('profileBackground') != 'no' ? 
+                    {profileBackground != 'no' ? 
                         <img 
-                        src={`http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${localStorage.getItem('profileBackground')}`}
+                        src={profileBackground}
                         className='profile-bg'
                         />
                         :''
                     }
                 </div>
                     <div >
-                        {localStorage.getItem('profilePicture') != 'no'  ? 
+                        {profilePicture != 'no'  ? 
                        
                         <img 
-                        src={`http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${localStorage.getItem('profilePicture')}`}
+                        src={profilePicture}
                         className='profile-picture'
                         /> :
                         <img src={require('../../../assets/images/tempPp.jpg')} className='profile-picture'/>
@@ -36,6 +40,12 @@ const Profile =()=>{
 
                 <div className='profile-actions'>
                    <h3> {localStorage.getItem('userName')}</h3><br/>
+
+                   <div style={{display:'flex',justifyContent:'space-evenly'}} className='bold'>
+                    <span>Following : {localStorage.getItem('following').split(',').length}</span>
+                    <span>Followers : {localStorage.getItem('follower').split(',').length}</span>    
+                   </div><br/>
+
                     <div>
                         
                         <button>

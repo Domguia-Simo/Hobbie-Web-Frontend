@@ -1,13 +1,14 @@
 import React,{useState} from 'react'
 import { ipAdress } from '../../../generals'
-
+import { useNavigate } from 'react-router-dom'
 import '../../../assets/styleSheets/createPostStyles/createPostStyles.css'
 import request from '../../request/Request'
 
 const CreatePostForm = () => {
-
+let navigate = useNavigate()
     const [description ,setDecription] =  useState('')
     const [file ,setFile] = useState('')
+    const [tempImage ,setTempImage] = useState('')
     const [loading ,setLoading] = useState(false)
 
     //To have the current Date
@@ -21,7 +22,7 @@ const sendPost=async()=>{
         description:description,
         dateOfCreation:date,
         userName:localStorage.getItem('userName'),
-        profilePicture:localStorage.getItem('profilePicture')
+        profilePicture:JSON.parse(localStorage.getItem('profilePicture')).name
     }
     setLoading(true)
 
@@ -44,19 +45,52 @@ const sendPost=async()=>{
             .catch(err => console.log(err))
 
     setLoading(false)
+    
+    navigate(-1)
 }
 
+const handleFileChange = async(e)=>{
+    if(e.target.files.length != 0){
+        console.log(e.target.files.length)
+        const reader = new FileReader()
+        reader.onload = () =>{
+            setTempImage(reader.result)
+        }
+        reader.readAsDataURL(e.target.files[0])
+    setFile(e.target.files[0])
+    }
+}
     return(
         <React.Fragment>
             
             <div className='post-form'>
 
-                <h2>Create a post</h2>
+                <h2> <span className='fas fa-arrow-left' onClick={()=>navigate(-1)} ></span> &nbsp;&nbsp;&nbsp; Create a post</h2>
                 
                 <div>
                     <center>
                         <label htmlFor='file' className='file'>
-                            <span className='fas fa-image'></span>
+                            {
+                                tempImage == '' ?
+                                <span className='fas fa-image'></span>
+                                :
+                                <>
+                                   {
+                                    file.type.split('/')[0] == 'image' ?
+                                    <img src={tempImage} style={{maxHeight:'400px'}} width='100%' />
+                                    :
+                                    <video 
+                                        src={tempImage}
+                                        style={{maxHeight:'400px' ,backgroundColor:'rgba(0,0,0,0.95)'}}
+                                        width='100%'
+                                        controls={true}
+                                        controlsList='nodownload'
+                                    >
+                                    </video>
+                                    }
+                                </>
+                                
+                            }
     
                             <div className='upload-button'>
                                 <span className='fas fa-plus'></span>  Upload a file
@@ -66,7 +100,7 @@ const sendPost=async()=>{
                             type='file' 
                             name='file' 
                             id='file'
-                            onChange={(e)=>setFile(e.target.files[0])}
+                            onChange={(e)=>handleFileChange(e)}
                             style={{display:'none'}}
                         />
                     </center><br/>
