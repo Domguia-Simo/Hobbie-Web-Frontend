@@ -44,11 +44,16 @@
   font-weight: 500;
   font-family: "Ms sans serif";
   padding: 10px 7px;
-  font-size: smaller;
+  font-size: medium;
   border-radius: 10px;
   border: 0;
   color: black;
   background-color: rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 1px grey;
+}
+.profile-actions div button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: -1px -1px 1px grey;
 }
 .profile-body {
   font-size: medium;

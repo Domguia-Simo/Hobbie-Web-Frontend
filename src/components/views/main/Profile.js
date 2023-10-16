@@ -1,17 +1,20 @@
-import React,{useState} from 'react'
-import {Link ,useLocation} from 'react-router-dom'
+import React,{useState ,useMemo} from 'react'
+import {Link ,useLocation, useNavigate} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
 
 const Profile =()=>{
+
+    let navigate = useNavigate()
     
     const [body ,setBody] = useState('posts')
 
-// console.log(JSON.parse(localStorage.getItem('profileBackground')))
+    const [initialX ,setInitialX] = useState()
 
 const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
 const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+
     return(
         <React.Fragment>
             <div className='profile'>
@@ -48,21 +51,26 @@ const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
 
                     <div>
                         
-                        <button>
+                        {/* <button>
                         <span className='fas fa-plus'></span> Create Story
-                        </button>
+                        </button> */}
 
-                        <button>
-                            <Link to='/home/profile/createPost'>
+                        <button onClick={()=>navigate('/home/profile/createPost')}>
+                            {/* <Link to='/home/profile/createPost'> */}
                                 <span className='fas fa-plus'></span> Create Post
-                            </Link>
+                            {/* </Link> */}
                         </button>
 
-                        <button>
-                            <Link to='/home/profile/editProfile'>
+                        <button onClick={()=>navigate('/home/profile/editProfile')}>
+                            {/* <Link to='/home/profile/editProfile'> */}
                                 <span className='fas fa-pen'></span> Edit Profile
-                            </Link>
+                            {/* </Link> */}
                         </button>
+
+                        <button onClick={()=>navigate('/home/setting')}>
+                            <span className='fas fa-gear'></span> More
+                        </button>
+
                     </div>
                 </div>
 
@@ -99,8 +107,12 @@ const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
                         :
                         <>
                             <div className='profile-bio'>
-                            Cookies obligatoires pour effectuer les fonctions essentielles du site web. Ces cookies sont nécessaires au bon fonctionnement de nos sites web. Les fonctions incluent la connexion, l’enregistrement des préférences linguistiques, la mesure et l’amélioration des performances, le routage du trafic entre les serveurs web, la détection de la taille de l’écran,
-                             la mesure des temps de chargement des pages, l’amélioration de l’expérience utilisateur, notamment la pertinence, la mesure de l’audience, la détection des fraudes et des abus, 
+                                {localStorage.getItem('bio') ? localStorage.getItem('bio'):
+                                <>
+                                Hey am {localStorage.getItem('userName')}.<br/>
+                                </>
+
+                                }
                             </div>
                         </>
                     }

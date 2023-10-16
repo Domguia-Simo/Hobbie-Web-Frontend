@@ -27,7 +27,7 @@ useMemo(()=>{
     }else if(path == 'posts'){
         setActive('home')
     }
-},[0])
+},[window.location.pathname])
 
 useMemo(()=>{
     if(localStorage.getItem('userId')){
@@ -50,17 +50,17 @@ useMemo(()=>{
                     <span className='far fa-user' title='account' onClick={()=>setActive('user')} id={active == 'user' ? 'active':''} ></span>
                 </Link>
 
-                {/* <Link to='/home/chat' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
+                <Link to='/home/chat' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='far fa-message' title='messages' onClick={()=>setActive('message')} id={active == 'message' ? 'active':''} ></span> 
-                </Link> */}
+                </Link>
 
                 <Link to='/home/notification' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='far fa-bell' title='notification' onClick={()=>setActive('notification')} id={active == 'notification' ? 'active':''} ></span> 
                 </Link>
 
-                <Link to='/home/setting' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
+                {/* <Link to='/home/setting' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}> 
                     <span className='fas fa-bars' title='option' onClick={()=>setActive('option')} id={active == 'option' ? 'active':''} ></span> 
-                </Link>
+                </Link> */}
 
             </div>
         

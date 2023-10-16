@@ -21,7 +21,7 @@ const logout=()=>{
     return(
         <React.Fragment>
             <div className='setting'>
-                <h2>More</h2>
+                <h2> <span className='fas fa-arrow-left' onClick={()=>navigate(-1)}></span> &nbsp;&nbsp; More</h2>
 
                 <center>
             <div className='setting-body'>

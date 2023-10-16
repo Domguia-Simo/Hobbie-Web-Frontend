@@ -1,9 +1,11 @@
 
 import React,{useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../../../assets/styleSheets/editProfileStyles/editProfileStyles.css'
 import request from '../../request/Request'
+import Saving from '../modals/Saving'
 import { ipAdress } from '../../../generals'
+
+import '../../../assets/styleSheets/editProfileStyles/editProfileStyles.css'
 
 const EditProfile =()=>{
 let navigate = useNavigate()
@@ -20,12 +22,21 @@ let navigate = useNavigate()
     const [removePicture ,setRemovePicture] = useState(false)
     const [removeBackground ,setRemoveBackground] = useState(false)
 
+    const [loading ,setLoading] = useState(false)
+
 
 function handleChange(e){
     setInfo({...info,[e.target.name]:e.target.value})
 }
 
 async function saveInfo(){
+
+    if(picture == '' && background == '' && info.name == '' && info.bio == ''){
+        navigate(-1)
+    }
+
+    setLoading(true)
+
     let userId = localStorage.getItem('userId')
     if(info.name != '' || info.bio != ''){
         let body={
@@ -35,16 +46,30 @@ async function saveInfo(){
         }
         let temp =await  request({body:body,method:'post',url:`http://${ipAdress}:5000/api/userAction/editProfile`})
         console.log(temp)
-        localStorage.setItem('userName',temp.name)
+        setLoading(false)
+        navigate(-1)
+        if(temp.bio){
+            localStorage.setItem('bio',temp.bio)
+        }
+        if(temp.name){
+            localStorage.setItem('userName',temp.name)
+        }
     }
 
     if(picture != ''){
         console.log(picture)
+            
         if(picture == 'no'){
             let body1 = {userId:localStorage.getItem('userId')}
             let temp1 =await  request({body:body1 ,method:'post',url:`http://${ipAdress}:5000/api/userAction/removeProfilePicture`})
             console.log(temp1)
-            localStorage.setItem('profilePicture',JSON.stringify({name:'no' ,file:'no'}))
+            await localStorage.setItem('profilePicture',JSON.stringify({name:'no' ,file:'no'}))
+                setTimeout(()=>{
+                    if(background == ''){
+                        setLoading(false)
+                        navigate(-1)
+                    }
+                },1000)
         }else{
             const formData1 = new FormData()
             formData1.append('file',picture)
@@ -64,9 +89,15 @@ async function saveInfo(){
     
                     xhr1.onload = async ()=>{
                         const reader1 = new FileReader()
-                        reader1.onload = async()=>{
-                            console.log(reader1.result)
+                         reader1.onload =  async()=>{
+                            // console.log(reader1.result)
                             await localStorage.setItem('profilePicture',JSON.stringify({name:data.profilePicture ,file:reader1.result}))
+                            setTimeout(()=>{
+                                if(background == ''){
+                                    setLoading(false)
+                                    navigate(-1)
+                                }
+                            },0)
                         }
                        await reader1.readAsDataURL(xhr1.response)
                     }
@@ -83,7 +114,11 @@ async function saveInfo(){
             let body2 = {userId:localStorage.getItem('userId')}
             let temp2 =await  request({body:body2 ,method:'post',url:`http://${ipAdress}:5000/api/userAction/removeProfileBackground`})
             console.log(temp2)
-            localStorage.setItem('profileBackground',JSON.stringify({name:'no' ,file:'no'}))
+            await localStorage.setItem('profileBackground',JSON.stringify({name:'no' ,file:'no'}))
+                setTimeout(()=>{
+                    setLoading(false)
+                    navigate(-1)
+                },1000)
         }else{
             const formData2 = new FormData()
             formData2.append('file',background)
@@ -104,8 +139,12 @@ async function saveInfo(){
                     xhr2.onload = async()=>{
                         const reader2 = new FileReader()
                         reader2.onload =async()=>{
-                            console.log(reader2.result)
+                            // console.log(reader2.result)
                            await localStorage.setItem('profileBackground',JSON.stringify({name:data.profileBackground ,file:reader2.result}))
+                           setTimeout(()=>{
+                                setLoading(false)
+                                navigate(-1)
+                            },0)
                         }
                       await  reader2.readAsDataURL(xhr2.response)
                     }
@@ -115,10 +154,6 @@ async function saveInfo(){
         }
     }
 
-    setTimeout(()=>{
-        navigate(-1)
-    },750)
-    // window.location.pathname ='/home/profile'
 }
 
 function handlePictureChange(e){
@@ -166,10 +201,12 @@ function handleFileClose(file){
 
 const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
 const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
-
     return(
         <React.Fragment>
+            {loading ? <Saving/> : ''}
+
             <div className='edit-form'>
+
 
             <h2> <span className='fas fa-arrow-left' onClick={()=>navigate(-1)}></span> &nbsp;&nbsp;Edit your profile</h2>
 
@@ -275,14 +312,21 @@ const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).
                         onChange={(e)=>handleChange(e)}
                         style={{resize:'none'}}
                         name='bio'
-                        placeholder='Hey! any thing about you ?'
+                        placeholder={localStorage.getItem('bio') ? localStorage.getItem('bio') : 'Hey! any thing about you ?'}
                     >
                     </textarea>
                </div>
 
                 <center>
-               <div className='post-button' onClick={()=>saveInfo()}>
-                    Save
+                    <br/>
+               <div className='post-button' >
+                <span onClick={()=>navigate(-1)}>
+                    Cancel &nbsp; <i className='fas fa-close'></i>
+                </span>
+
+                <span onClick={()=>saveInfo()}>
+                    Save &nbsp; <i className='fas fa-check' ></i>
+                </span>
                 </div><br/><br/>
                 </center>
 

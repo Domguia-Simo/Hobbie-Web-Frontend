@@ -135,15 +135,18 @@ function shortText(text){
             }
             newText[i] = text[i]
         }
+
         return (
             <>
             {newText}
+            {/* <span dangerouslySetInnerHTML={{ __html: newText }}/> */}
+
             <strong onClick={()=>{}}>... Read More </strong>
             </>
             )
     }
 
-return text
+return <span dangerouslySetInnerHTML={{ __html: text }}/> 
 }
 function longText(text){
 
@@ -151,13 +154,14 @@ function longText(text){
 
         return (
             <>
+            
             {text}
             <strong onClick={()=>{}}> Read Less </strong>
             </>
             )
     }
 
-return text
+return <span dangerouslySetInnerHTML={{ __html: text}}/>
 }
 
 //To show or hide the description of a  post
@@ -320,8 +324,11 @@ let displayPosts = posts.map(post =>{
         if(post.display == 'none'){
             return
         }
-        // console.log(post.following)
 
+        if(post.description){
+            // console.log(post.description)
+            // post.description = post.description.replaceAll('\n','<br />')
+        }
     return(
             <div className='post-container' key={post._id}  style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'',color:theme == 'dark'?'white':''}} >
                     
@@ -397,10 +404,10 @@ let displayPosts = posts.map(post =>{
                         <>
                         {
                             post.fullText ? 
-                            <span onClick={()=>{showFullText(post._id)}}>
+                            <span onClick={()=>{showFullText(post._id)}} >
                                 {longText(post.description)}
                             </span>  :
-                            <span onClick={()=>{showFullText(post._id)}}>
+                            <span onClick={()=>{showFullText(post._id)}} >
                                 {shortText(post.description)}
                             </span>
                          }
@@ -437,6 +444,7 @@ let displayPosts = posts.map(post =>{
             </div>
     )
 })
+// let text = '\n\n\nSimo Ulrich'
 
     return(
         <React.Fragment>
@@ -453,6 +461,7 @@ let displayPosts = posts.map(post =>{
              
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
             <div className='full-post-body' onClick={(e)=>closeOptions(e)}>
+                {/* {<span dangerouslySetInnerHTML={{__html:text.replaceAll('\n','<br/>')}}></span>} */}
              {displayPosts}
             </div>
             <br/>

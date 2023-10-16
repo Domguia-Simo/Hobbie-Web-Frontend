@@ -18,6 +18,7 @@ function handleChange(e){
 }
 const submit = async()=>{
     setLoading(true)
+    localStorage.clear()
     let temp = await request({method:'post' ,body:data,url:`http://${ipAdress}:5000/api/user/login`})
     console.log(temp)
     if(temp.id){
@@ -26,6 +27,7 @@ const submit = async()=>{
         localStorage.setItem('userName',temp.userName)
         localStorage.setItem('following' ,temp.following)
         localStorage.setItem('follower',temp.follower)
+        localStorage.setItem('bio',temp.bio)
 
         //Storing some files in the localstorage
         //Saving locally th user's profile picture

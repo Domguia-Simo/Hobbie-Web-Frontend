@@ -1,8 +1,14 @@
 import React,{useState} from 'react'
 import { ipAdress } from '../../../generals'
 import { useNavigate } from 'react-router-dom'
-import '../../../assets/styleSheets/createPostStyles/createPostStyles.css'
 import request from '../../request/Request'
+import Saving from '../modals/Saving'
+// import ReactTextareaAutocomplete from 'react-textarea-autocomplete';
+import EmojiPicker from 'react-emoji-picker';
+
+
+import '../../../assets/styleSheets/createPostStyles/createPostStyles.css'
+import {Picker} from 'emoji-mart';
 
 const CreatePostForm = () => {
 let navigate = useNavigate()
@@ -16,6 +22,9 @@ let date = new Date
 date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear();
 
 const sendPost=async()=>{
+
+    setLoading(true)
+
     console.log(description ,file)
     let body = {
         userId:localStorage.getItem('userId'),
@@ -24,7 +33,6 @@ const sendPost=async()=>{
         userName:localStorage.getItem('userName'),
         profilePicture:JSON.parse(localStorage.getItem('profilePicture')).name
     }
-    setLoading(true)
 
         let temp = await request({method:'post',url:`http://${ipAdress}:5000/api/post/createPost`,body:body})
             console.log(temp)
@@ -41,12 +49,16 @@ const sendPost=async()=>{
                 body:formData
             })
             .then(res=>res.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err))
+            .then(data => {
+                console.log(data)
+                setLoading(false)
+                navigate(-1)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false)
+            })
 
-    setLoading(false)
-    
-    navigate(-1)
 }
 
 const handleFileChange = async(e)=>{
@@ -60,13 +72,12 @@ const handleFileChange = async(e)=>{
     setFile(e.target.files[0])
     }
 }
+
     return(
         <React.Fragment>
-            
+            {loading ? <Saving/>:''}
             <div className='post-form'>
-
                 <h2> <span className='fas fa-arrow-left' onClick={()=>navigate(-1)} ></span> &nbsp;&nbsp;&nbsp; Create a post</h2>
-                
                 <div>
                     <center>
                         <label htmlFor='file' className='file'>
@@ -108,13 +119,14 @@ const handleFileChange = async(e)=>{
 
                 <center>
                     <div>
+                        {/* <EmojiPicker emoji={'smile'}/> */}
                         <textarea
                             value={description}
                             onChange={(e)=>setDecription(e.target.value)}
                             style={{resize:'none'}}
                             placeholder='Hey! any description... ?'
                         >
-
+                            {/* <ReactTextareaAutocomplete/> */}
                         </textarea>
                     </div>
                 </center>
