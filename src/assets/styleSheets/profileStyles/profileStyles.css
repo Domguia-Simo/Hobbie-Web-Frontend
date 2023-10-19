@@ -75,15 +75,10 @@
   border-bottom: solid 3px transparent;
 }
 .profile-body .profile-posts {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
-  row-gap: 1px;
-  -moz-column-gap: 1px;
-       column-gap: 1px;
-}
-.profile-body .profile-posts div {
-  height: 130px;
-  background-color: rgb(153, 153, 216);
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.05);
+  row-gap: 7px;
 }
 .profile-body .profile-bio {
   padding: 15px;

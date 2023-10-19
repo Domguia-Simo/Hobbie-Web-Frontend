@@ -126,7 +126,6 @@ export const FixFoot =()=>{
                 <span className='fas fa-user-friends' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
                 <span className='fas fa-search' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
                 <span className='fas fa-gift' style={{color:theme == 'dark' ? 'rgba(255,255,255,0.8)':''}}></span>
-
             </div>
         </React.Fragment>
 

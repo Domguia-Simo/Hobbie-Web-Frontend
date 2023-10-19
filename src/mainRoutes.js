@@ -4,6 +4,7 @@ import Notification from './components/views/main/Notification'
 import Profile from './components/views/main/Profile'
 import Setting from './components/views/main/Setting'
 import Comment from './components/views/main/Comment'
+import ViewProfile from './components/views/main/ViewProfile'
 
 import CreatePostForm from './components/views/forms/CreatePostForm'
 import EditProfile from './components/views/forms/EditProfileForm'
@@ -47,6 +48,11 @@ const mainRoutes = [
     {
         path:'/setting',
         component:<Setting/>,
+        layout:'/home'
+    },
+    {
+        path:'/viewProfile',
+        component:<ViewProfile/>,
         layout:'/home'
     },
 //Sub routes of Profile Component

@@ -1,14 +1,15 @@
 import React from 'react'
 
-const Saving =()=>{
+const Saving =({text})=>{
     return(
         <React.Fragment>
             <div style={{
                 width:'100%',
                 height:'200%',
                 position:'fixed',
+                top:'0',
                 backgroundColor:'rgba(0,0,0,0.5)',
-                zIndex:'100',
+                zIndex:'1000',
                 overflow:'hidden',
                 marginTop:'-20px'
                
@@ -26,7 +27,7 @@ const Saving =()=>{
                     display:'flex',
                     alignItems:'center'
                 }}> 
-                   <img src={require('../../../assets/images/loading.gif')} width='25px' height='25px'/> &nbsp; Saving changes
+                   <img src={require('../../../assets/images/loading.gif')} width='25px' height='25px'/> &nbsp;{text ? text: ''}
                 </div>
             </div>
         </React.Fragment>

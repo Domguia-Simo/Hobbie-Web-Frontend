@@ -4,6 +4,10 @@ import NoAccount from '../modals/NoAccount'
 import request from '../../request/Request'
 import { ipAdress,stringDate } from '../../../generals'
 import Comment from './Comment'
+import Saving from '../modals/Saving'
+import Signal from '../modals/Signal'
+
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 //context provider
 import { ThemeContext } from '../../contextProvider/Provider'
@@ -18,13 +22,22 @@ const io = socketClient.io
 //socket connection with the server
 let socket = new io(`http://${ipAdress}:5000`)
 
-const Posts = ({InCommingposts}) => {
+const Posts = ({InCommingposts ,viewing}) => {
+    let navigate = useNavigate()
   
     const [posts ,setPosts] = useState(InCommingposts)
+
     const [NoAccountModal ,setNoAccountModal] = useState(false)
+    const [signalModal ,setSignalModal] = useState([false,'',''])
+
     const [user ,setUser] = useState(false)
     const [playing ,setPlaying] = useState({video:{} ,e:''})
     const [displayComment ,setDisplayComment] = useState([false,{}])
+    const [switchView ,setSwitchView] = useState(false)
+
+    
+    const [page ,setPage] = useState(0)
+    const [loadMoreCall ,setLoadMoreCall] = useState(false)
 
 let theme = useContext(ThemeContext).theme
 
@@ -252,6 +265,17 @@ async function followUser(post){
 
 }
 
+function firstContent(id){
+    console.log('finish loading')
+    let newPosts = posts.map(post => {
+        if(post._id == id){
+            post.loaded = true
+        }
+        return post
+    })
+    setPosts(newPosts)
+}
+
 
 function displayFile(post){
     let ext = post.fileName.split('.')
@@ -260,7 +284,7 @@ function displayFile(post){
     
     if(ext == 'jpg' || ext == 'png' || ext == 'gif' || ext == 'jpeg' || ext == 'bmp' || ext == 'webp' || ext == 'jfif'){
         return  (
-                <img src={`http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>
+                <img src={ `http://${ipAdress}:5000/postFiles/${post.userId}/${post._id}/${post.fileName}`}/>
             )
     }
     else if(ext == 'mp4' || ext == 'avi' || ext == 'mpeg' || ext == 'ts' || ext == 'mkv'){
@@ -298,7 +322,79 @@ function closeOptions(e){
         setPosts(newPosts)
     }
 }
+async function viewProfile(post){
+    setSwitchView(true)
 
+    let body = {
+        userId:post.userId
+    }
+    let temp = await request({method:'post',url:`http://${ipAdress}:5000/api/userAction/viewProfile`,body:body})
+    console.log(temp)
+    setSwitchView(false)
+
+    navigate('/viewProfile',{state:temp})
+}
+
+async function signalAccount(post){
+    setSignalModal([true ,post.userName ,post.userId])
+    console.log('signaling a user')
+}
+
+
+// //To load more posts and append to the existing posts
+// useEffect(()=>{
+//     async function fetchData(){
+
+//         console.log(page)
+
+//         let skip = (page) * 5
+//         let limit = 5
+
+//         console.log('fetching new posts')
+//         let temp = await request({url:`http://${ipAdress}:5000/api/post/getPosts/${skip}/${limit}`,method:'get'})
+//         // console.log(temp.posts)
+//         setPosts([...posts ,...temp.posts])
+            
+//     }
+//     fetchData()
+// },[page])
+
+// console.log(posts)
+// console.log(loadMoreCall)
+
+// //function to loadMore posts from the db
+// async function loadMore(){
+//     console.log('load more')
+//     let newpage = parseInt(page + 1)
+//     console.log(page)
+
+//     setPage(newpage)
+//     console.log(page)
+// }
+
+// const targetElement = document.querySelector('.end');
+
+// // useMemo(()=>{
+//     if(targetElement){
+
+//         const observer = new IntersectionObserver((entries) => {
+//             entries.forEach(async(entry) => {
+//               if (entry.isIntersecting && !loadMoreCall) {
+                
+//                 //   loadMore()
+//                 console.log(page)
+//                 setLoadMoreCall(true)
+//                 setPage(page+1)
+//                  console.log(page)
+//                  console.log(loadMoreCall)
+//                 //   setLoadMoreCall(true)
+//               }
+//             });
+//           });
+          
+//           observer.observe(targetElement);
+//     }
+// // },[targetElement,page])
 
 let displayPosts = posts.map(post =>{
 
@@ -329,6 +425,7 @@ let displayPosts = posts.map(post =>{
             // console.log(post.description)
             // post.description = post.description.replaceAll('\n','<br />')
         }
+
     return(
             <div className='post-container' key={post._id}  style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'',color:theme == 'dark'?'white':''}} >
                     
@@ -344,46 +441,53 @@ let displayPosts = posts.map(post =>{
                             <span className=''>{stringDate(post.dateOfCreation)}</span>
                         </div>
                     </div>
-                    <div style={{
-                        display:'flex',
-                        alignItems:'flex-end',
-                        columnGap:'12px'
-                    }}>
-                
-                        <span style={{
-                            padding:'5px 7px',
-                            borderRadius:'5px',
-                            color:post.following ? theme ==  'dark' ? 'rgba(255,255,255,0.5)':'rgba(0,0,0,0.4)': theme ==  'dark' ? 'rgba(255,255,255,0.8)':'rgba(0,0,0,0.9)',
-                            // backgroundColor:'white',
-                            fontWeight:'bold',
-                            display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
-                        }} 
-                            onClick={()=>followUser(post)}
-                        >
-                           {
-                            post.following ? 'Following' : 'Follow'
-                           } 
-                        </span> 
+                        {viewing ? '':
                         
+                        <div style={{
+                            display:'flex',
+                            alignItems:'flex-end',
+                            columnGap:'12px'
+                        }}>
+                    
+                            <span style={{
+                                padding:'5px 7px',
+                                borderRadius:'5px',
+                                color:post.following ? theme ==  'dark' ? 'rgba(255,255,255,0.5)':'rgba(0,0,0,0.4)': theme ==  'dark' ? 'rgba(255,255,255,0.8)':'rgba(0,0,0,0.9)',
+                                // backgroundColor:'white',
+                                fontWeight:'bold',
+                                display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
-                        <span 
-                        className='options' 
-                        onClick={()=>handleOptions(post._id)}
-                        style={{display:localStorage.getItem('userId') == post.userId ? 'none' : ''}}
-                        >...</span>
+                            }} 
+                                onClick={()=>followUser(post)}
+                            >
+                            {
+                                post.following ? 'Following' : 'Follow'
+                            } 
+                            </span> 
+                            
 
-                        <span 
-                        className='fas fa-close options' 
-                        onClick={()=>closePost(post)}
-                        style={{display:localStorage.getItem('userId') == post.userId ? '' : 'none'}}
-                        ></span>
-                    </div>
+                            <span 
+                            className='options' 
+                            onClick={()=>handleOptions(post._id)}
+                            style={{display:localStorage.getItem('userId') == post.userId ? 'none' : ''}}
+                            >...</span>
+
+                            <span 
+                            className='fas fa-close options' 
+                            onClick={()=>closePost(post)}
+                            style={{display:localStorage.getItem('userId') == post.userId ? '' : 'none'}}
+                            ></span>
+                        </div>
+                        }
+
                     {
                         post.option ? 
                         <div className='post-options' style={{backgroundColor:theme == 'dark' ? 'rgba(50,50,50,1)':''}}>
-                            <span>View Profile</span>
-                            <span>Signal</span>
+                            
+                            <span onClick={()=>viewProfile(post)} ><i className='fas fa-eye'></i> View Profile</span>
+
+                            <span onClick={()=>signalAccount(post)}> <i className='fas fa-thumbs-down'></i> Signal</span>
                         </div>
                              : ''
                     }
@@ -444,10 +548,14 @@ let displayPosts = posts.map(post =>{
             </div>
     )
 })
-// let text = '\n\n\nSimo Ulrich'
 
     return(
         <React.Fragment>
+            {
+                switchView ? <Saving text={'Loading ... '}/> : ''
+            }
+            {signalModal[0] ? <Signal userName={signalModal[1]} setSignalModal={setSignalModal} userId={signalModal[2]}/>:''}
+            
             {
                 displayComment[0] ? 
                     <Comment 
@@ -457,13 +565,17 @@ let displayPosts = posts.map(post =>{
                         posts={posts} 
                         setPosts={setPosts} 
                     /> : ''
-            }
+                }
              
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
-            <div className='full-post-body' onClick={(e)=>closeOptions(e)}>
-                {/* {<span dangerouslySetInnerHTML={{__html:text.replaceAll('\n','<br/>')}}></span>} */}
-             {displayPosts}
+              
+
+            <div className='full-post-body' onClick={(e)=>closeOptions(e)} >
+                {displayPosts}
+
             </div>
+                {/* <span className='end'></span> */}
+
             <br/>
             
             

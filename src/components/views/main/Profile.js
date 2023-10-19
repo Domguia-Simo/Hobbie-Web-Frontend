@@ -1,19 +1,37 @@
-import React,{useState ,useMemo} from 'react'
+import React,{useState ,useMemo ,useEffect} from 'react'
 import {Link ,useLocation, useNavigate} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
+import request from '../../request/Request'
+import Posts from './Posts'
 
 const Profile =()=>{
 
     let navigate = useNavigate()
     
     const [body ,setBody] = useState('posts')
+    const [posts ,setPosts] = useState([])
 
-    const [initialX ,setInitialX] = useState()
+    const [loadingPosts ,setLoadingPosts] = useState(false)
 
 const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
 const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+
+useEffect(()=>{
+    async function fetchData(){
+        let body={
+            userId:localStorage.getItem('userId')
+        }
+        setLoadingPosts(true)
+            let temp = await request({url:`http://${ipAdress}:5000/api/userAction/getUserPosts`,method:'post',body:body})
+            setPosts(temp.posts)
+        setLoadingPosts(false)
+    }
+    fetchData()
+},[0])
+
+
 
     return(
         <React.Fragment>
@@ -95,22 +113,22 @@ const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
                         body == 'posts' ?
                         <>
                             <div className='profile-posts'>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
+                                {loadingPosts ? 
+                                <center><br/><br/>
+                                    <img src={require('../../../assets/images/loading.gif')} width='30px' height='30px'/>
+                                </center>:
+                                
+                                <Posts InCommingposts={posts}/>
+                                }
                             </div>
                         </>
                         :
                         <>
                             <div className='profile-bio'>
-                                {localStorage.getItem('bio') ? localStorage.getItem('bio'):
-                                <>
-                                Hey am {localStorage.getItem('userName')}.<br/>
-                                </>
+                                {localStorage.getItem('bio') != undefined ? localStorage.getItem('bio'):
+                                // <>
+                                `Hey am {localStorage.getItem('userName')}.<br/>`
+                                // </>
 
                                 }
                             </div>
