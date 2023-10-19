@@ -19,7 +19,7 @@ let navigate = useNavigate()
 
     //To have the current Date
 let date = new Date
-date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear();
+date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
 
 const sendPost=async()=>{
 
@@ -75,7 +75,7 @@ const handleFileChange = async(e)=>{
 
     return(
         <React.Fragment>
-            {loading ? <Saving/>:''}
+            {loading ? <Saving text={'Uploading ...'}/>:''}
             <div className='post-form'>
                 <h2> <span className='fas fa-arrow-left' onClick={()=>navigate(-1)} ></span> &nbsp;&nbsp;&nbsp; Create a post</h2>
                 <div>

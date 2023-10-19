@@ -38,7 +38,7 @@ useEffect(()=>{
         setLoadMoreCall(false)
 
     }
-    fetchData()
+    // fetchData()
 },[0])
 
 //To load more posts and append to the existing posts
@@ -56,12 +56,12 @@ useEffect(()=>{
             // setLoadingPosts(false)
             // setLoadMoreCall(false)
         }
-        fetchData()
+        // fetchData()
     }
 },[page])
 
-console.log(post)
-console.log(loadMoreCall)
+// console.log(post)
+// console.log(loadMoreCall)
 
 //function to loadMore posts from the db
 async function loadMore(){
@@ -101,7 +101,7 @@ async function loadMore(){
                     }}>
                         <img src={require('../../../assets/images/loading.gif')} width='25px' height='25px'/>
                     </div>:
-                    <Posts InCommingposts={post}/>
+                    <Posts InCommingposts={posts}/>
                 
                 }
                 <br/><br/>

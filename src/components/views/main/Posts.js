@@ -265,17 +265,6 @@ async function followUser(post){
 
 }
 
-function firstContent(id){
-    console.log('finish loading')
-    let newPosts = posts.map(post => {
-        if(post._id == id){
-            post.loaded = true
-        }
-        return post
-    })
-    setPosts(newPosts)
-}
-
 
 function displayFile(post){
     let ext = post.fileName.split('.')
@@ -341,60 +330,6 @@ async function signalAccount(post){
 }
 
 
-// //To load more posts and append to the existing posts
-// useEffect(()=>{
-//     async function fetchData(){
-
-//         console.log(page)
-
-//         let skip = (page) * 5
-//         let limit = 5
-
-//         console.log('fetching new posts')
-//         let temp = await request({url:`http://${ipAdress}:5000/api/post/getPosts/${skip}/${limit}`,method:'get'})
-//         // console.log(temp.posts)
-//         setPosts([...posts ,...temp.posts])
-            
-//     }
-//     fetchData()
-// },[page])
-
-// console.log(posts)
-// console.log(loadMoreCall)
-
-// //function to loadMore posts from the db
-// async function loadMore(){
-//     console.log('load more')
-//     let newpage = parseInt(page + 1)
-//     console.log(page)
-
-//     setPage(newpage)
-//     console.log(page)
-// }
-
-// const targetElement = document.querySelector('.end');
-
-// // useMemo(()=>{
-//     if(targetElement){
-
-//         const observer = new IntersectionObserver((entries) => {
-//             entries.forEach(async(entry) => {
-//               if (entry.isIntersecting && !loadMoreCall) {
-                
-//                 //   loadMore()
-//                 console.log(page)
-//                 setLoadMoreCall(true)
-//                 setPage(page+1)
-//                  console.log(page)
-//                  console.log(loadMoreCall)
-//                 //   setLoadMoreCall(true)
-//               }
-//             });
-//           });
-          
-//           observer.observe(targetElement);
-//     }
-// // },[targetElement,page])
 
 let displayPosts = posts.map(post =>{
 
@@ -438,7 +373,7 @@ let displayPosts = posts.map(post =>{
                         }
                         <div>
                             <span className='bold' style={{letterSpacing:'1.5px'}}>{post.userName}</span>
-                            <span className=''>{stringDate(post.dateOfCreation)}</span>
+                            <span className=''>{post.dateOfCreation.split(' ')[1] ? stringDate(post.dateOfCreation.split(' ')[0]) +' | '+post.dateOfCreation.split(' ')[1]:stringDate(post.dateOfCreation.split(' ')[0])}</span>
                         </div>
                     </div>
 

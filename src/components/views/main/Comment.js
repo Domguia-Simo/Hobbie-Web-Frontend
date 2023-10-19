@@ -9,27 +9,80 @@ const Comment =({displayComment ,setDisplayComment,socket,posts,setPosts})=>{
     const [comments, setComments] = useState(displayComment.comment.reverse())
     const [commentText ,setCommentText] = useState('')
 
-const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).name
 let theme = useContext(ThemeContext).theme
+
+async function likeComment(comment){
+    if(comment._id){
+        let body = {
+            commentId:comment._id,
+            likerId:localStorage.getItem('userId')
+        }
+         socket.emit('likeComment',body)
+    }
+}
+socket.on('commentLiked',async({comment ,commentId})=>{
+    let newComment = comment.map(com => {
+        if(com._id == commentId){
+            for(let i=0;i<com.like.length;i++){
+                if(com.like[i] == localStorage.getItem('userId')){
+                    com.liked = true
+                }
+            }
+        }
+        return com
+    })
+    setComments(newComment)
+
+})
+socket.on('commentUnLiked',async({comment,commentId})=>{
+    let newComment = comment.map(com => {
+        if(com._id == commentId){
+            for(let i=0;i<com.like.length;i++){
+                if(com.like[i] == localStorage.getItem('userId')){
+                    com.liked = false
+                }
+            }
+        }
+        return com
+    })
+    setComments(newComment)
+})
+
 
 let displayComments = []
 if(comments.length != 0){
      displayComments = comments.map((comment)=>{
+
+        for(let i=0;i<comment.like.length;i++){
+            if(comment.like[i] == localStorage.getItem('userId'))
+                comment.liked = true
+        }
+        
         return (
             <div className='comment-body' key={comment.comment + comment.dateOfComment + Date.now()}>
                 <div className='comment-profile-picture'>
                     {
-                        // profilePicture != 'no' ?
-                        // <img src={profilePicture} />
-                        // :
+                       comment.profilePicture && comment.profilePicture != 'no' ?
+                        <img src={comment.profilePicture} />
+                        :
                         <img src={require('../../../assets/images/tempPp.jpg')} />
                     }
                 </div>
-                <div className='comment-content'>
+                <div className='comment-content' >
                     <span>{comment.userName}</span>
                     <span style={{textIndent:'10px'}}>{comment.comment}</span>
-                    <span className='date'>{stringDate(comment.dateOfComment)}</span>
+                    <span className='date'>{ comment.dateOfComment.split(' ')[1] ? comment.dateOfComment.split(' ')[0].replaceAll('/','-') +' | '+comment.dateOfComment.split(' ')[1]:comment.dateOfComment.split(' ')[0]}</span>
                 </div>
+                <div className='comment-actions'>
+                    <div>
+                        {comment.like && comment.like != 0 ? comment.like.length:''} <span style={{color:'rgba(255,0,0,0.6)'}} className={comment.liked ? 'fas fa-heart' : 'far fa-heart' } onClick={()=>likeComment(comment)}> </span>
+                    </div>
+                    {/* <div>
+                        {comment.reply && comment.reply != 0 ? comment.reply.length:''} <span className='fas fa-reply'> </span>
+                    </div> */}
+                </div>
+
             </div>
         )
     })
@@ -42,14 +95,17 @@ const sendComment=async(e)=>{
     e.preventDefault()
         //To have the current Date
     let date = new Date
-    date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear();
+    date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
+
+let pp = profilePicture != 'no' ? `http://${ipAdress}:5000/userPictures/${localStorage.getItem('userId')}/${profilePicture}`:'no'
 
     let body={
         dateOfComment:date,
         userId:localStorage.getItem('userId'),
         userName:localStorage.getItem('userName'),
         comment:commentText,
-        postId:displayComment._id
+        postId:displayComment._id,
+        profilePicture:pp
     }
     socket.emit('comment',body)
 
@@ -82,6 +138,7 @@ socket.on('commented',({id ,newComment})=>{
 
                 <div className='comments' style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'' ,color:theme == 'dark' ? 'black':""}}>  
                     {displayComments}
+                    <br/><br/><br/><br/><br/>
                 </div>
 
                 <div className='form' style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'' ,color:theme == 'dark' ? 'white':""}}>

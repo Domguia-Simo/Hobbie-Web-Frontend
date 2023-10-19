@@ -203,7 +203,7 @@ const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
 const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
     return(
         <React.Fragment>
-            {loading ? <Saving/> : ''}
+            {loading ? <Saving text={'Saving Changes ...'}/> : ''}
 
             <div className='edit-form'>
 

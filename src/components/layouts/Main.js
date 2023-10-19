@@ -22,7 +22,7 @@ const Main =()=>{
 
 useEffect(()=>{
     const fetchData =async()=>{
-        let temp = await request({method:'GET' ,body:'',url:`http://${ipAdress}:5000/api/post/getAllPos`})
+        let temp = await request({method:'GET' ,body:'',url:`http://${ipAdress}:5000/api/post/getAllPost`})
         if(temp.posts){
             setPosts(temp.posts.reverse())
         }

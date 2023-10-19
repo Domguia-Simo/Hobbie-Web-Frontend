@@ -56,6 +56,13 @@
 .comment-container .comments .comment-body .comment-content .date {
   text-align: right;
 }
+.comment-container .comments .comment-body .comment-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 20px;
+  color: rgba(0, 0, 0, 0.7);
+}
 .comment-container .form {
   position: fixed;
   bottom: 0;
