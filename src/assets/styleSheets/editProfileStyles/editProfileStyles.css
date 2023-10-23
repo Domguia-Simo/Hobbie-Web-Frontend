@@ -1,3 +1,13 @@
+@keyframes zoomOut {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .edit-form {
   position: absolute;
   margin-top: 54px;
@@ -50,7 +60,8 @@
 }
 .edit-form .file-actions span {
   padding: 10px 30px;
-  background-color: rgba(255, 136, 0, 0.08);
+  background-color: rgba(255, 136, 0, 0.2);
+  border-radius: 5px;
 }
 .edit-form div textarea {
   width: 88%;

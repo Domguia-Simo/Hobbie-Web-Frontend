@@ -8,6 +8,16 @@
     opacity: 1;
   }
 }
+@keyframes zoomOut {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .chat-container {
   position: absolute;
   margin-top: 54px;

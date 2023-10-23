@@ -24,7 +24,7 @@ useEffect(()=>{
     const fetchData =async()=>{
         let temp = await request({method:'GET' ,body:'',url:`http://${ipAdress}:5000/api/post/getAllPost`})
         if(temp.posts){
-            setPosts(temp.posts.reverse())
+            setPosts(temp.posts)
         }
     }
     fetchData()
@@ -32,7 +32,7 @@ useEffect(()=>{
 
     let mainRoute = mainRoutes.map(route => {
         if(route.path === '/posts'){
-            return <Route path={`${route.path}`} element={<DefaultView posts={posts}/>} key={route.path} />
+            return <Route path={`${route.path}`} element={<DefaultView posts={posts} setPosts={setPosts}/>} key={route.path} />
         }
         else{
             return <Route path={`${route.path}`} element={route.component} key={route.path} />
@@ -43,12 +43,12 @@ useEffect(()=>{
         <React.Fragment>
             <ThemeProvider>
                 <div id="main-body">
-                    <Header/>
+                    <Header />
                     <div className='main-content'>
                         {
                         <Routes>
                             {mainRoute}
-                            <Route path='*' element={<DefaultView posts={posts}/> }/>
+                            <Route path='*' element={<DefaultView posts={posts} setPosts={setPosts}/> }/>
                         </Routes>
                         }
                     </div>

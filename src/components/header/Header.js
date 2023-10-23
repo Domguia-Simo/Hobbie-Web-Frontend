@@ -6,6 +6,8 @@ import { ThemeContext } from '../contextProvider/Provider'
 
 //styleing sheet
 import '../../assets/styleSheets/headerStyles/headerStyles.css'
+import request from '../request/Request'
+import { ipAdress } from '../../generals'
 
 export const Header =()=>{
     const [active ,setActive] = useState('home')
@@ -85,13 +87,26 @@ useMemo(()=>{
 }
 
 let category = [
-    'General','Anime/Mangas' , 'Sport','News','Electronics','Programming' ,'Music','Fashion','Games'
+    'General','Anime/Mangas' , 'Sport','News','Technology','Computer' ,'Music','Fashion','Games'
 ]
 
-export const Category =()=>{
+export const Category =({setPosts})=>{
     const [activeCat ,setActiveCat] = useState('General')
 
     let theme = useContext(ThemeContext).theme
+
+async function filterPosts(cat){
+    setActiveCat(`${cat}`)
+    if(cat == 'Anime/Mangas'){
+        cat = 'Anime'
+    }
+    let body = {
+        category:cat
+    }
+    let temp = await request({url:`http://${ipAdress}:5000/api/post/getFilteredPost`,method:'post',body:body})
+        console.log(temp)
+        setPosts(temp.posts)
+}
 
 let displayCategory = category.map(cat => {
     return (
@@ -100,7 +115,7 @@ let displayCategory = category.map(cat => {
         className='category' 
         title={cat} 
         key={cat} 
-        onClick={()=>setActiveCat(`${cat}`)} 
+        onClick={()=>filterPosts(cat)} 
         id={activeCat == cat ? 'activeCat':''}
         style={{backgroundColor:theme == 'dark' ? 'rgba(255,255,255,0.85)':'',color:theme == 'dark' ? 'black':''}}
     >

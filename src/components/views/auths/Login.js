@@ -70,8 +70,8 @@ const submit = async()=>{
             localStorage.setItem('profileBackground',JSON.stringify({name:temp.profileBackground ,file:temp.profileBackground}))
         }
 
-        // navigate('/home/post');
-        window.location.pathname = '/home/post'
+        navigate('/home/post');
+        // window.location.pathname = '/home/post'
     }
     setRespond(temp)
     setLoading(false)

@@ -6,6 +6,7 @@ import { ipAdress,stringDate } from '../../../generals'
 import Comment from './Comment'
 import Saving from '../modals/Saving'
 import Signal from '../modals/Signal'
+import Delete from '../modals/Delete'
 
 import InfiniteScroll from 'react-infinite-scroll-component'
 
@@ -22,18 +23,21 @@ const io = socketClient.io
 //socket connection with the server
 let socket = new io(`http://${ipAdress}:5000`)
 
-const Posts = ({InCommingposts ,viewing}) => {
+const Posts = ({InCommingposts ,viewing ,canDelete}) => {
     let navigate = useNavigate()
   
     const [posts ,setPosts] = useState(InCommingposts)
 
     const [NoAccountModal ,setNoAccountModal] = useState(false)
     const [signalModal ,setSignalModal] = useState([false,'',''])
+    const [deleteModal ,setDeleteModal] = useState([false ,''])
 
     const [user ,setUser] = useState(false)
     const [playing ,setPlaying] = useState({video:{} ,e:''})
     const [displayComment ,setDisplayComment] = useState([false,{}])
     const [switchView ,setSwitchView] = useState(false)
+
+    const [follow ,setFollow] = useState(false)
 
     
     const [page ,setPage] = useState(0)
@@ -253,18 +257,33 @@ async function followUser(post){
         if(post.following){
             return
         }
-    console.log(post.userId)
+
     let body={
         userId:localStorage.getItem('userId'),
         followingId : post.userId
     }
+
+    setFollow(true)
+
     let temp = await request({url:`http://${ipAdress}:5000/api/userAction/followUser`,method:'post',body:body})
         console.log(temp)
-        let newFollowing = localStorage.getItem('following').split(',').push(post.userId)
+
+           let newFollowing 
+           let tempFollowing = localStorage.getItem('following').split(',')
+
+            if(localStorage.getItem('following')){
+                newFollowing = tempFollowing
+                newFollowing.push(post.userId)
+            }else{
+                newFollowing = post.userId
+            }
+
         localStorage.setItem('following',newFollowing)
 
-}
 
+    setFollow(false)
+
+}
 
 function displayFile(post){
     let ext = post.fileName.split('.')
@@ -318,7 +337,7 @@ async function viewProfile(post){
         userId:post.userId
     }
     let temp = await request({method:'post',url:`http://${ipAdress}:5000/api/userAction/viewProfile`,body:body})
-    console.log(temp)
+    // console.log(temp)
     setSwitchView(false)
 
     navigate('/viewProfile',{state:temp})
@@ -326,9 +345,11 @@ async function viewProfile(post){
 
 async function signalAccount(post){
     setSignalModal([true ,post.userName ,post.userId])
-    console.log('signaling a user')
 }
 
+async function deletePost(post){
+    setDeleteModal([true,post._id])
+}
 
 
 let displayPosts = posts.map(post =>{
@@ -377,44 +398,52 @@ let displayPosts = posts.map(post =>{
                         </div>
                     </div>
 
-                        {viewing ? '':
                         
-                        <div style={{
-                            display:'flex',
-                            alignItems:'flex-end',
-                            columnGap:'12px'
-                        }}>
-                    
-                            <span style={{
-                                padding:'5px 7px',
-                                borderRadius:'5px',
-                                color:post.following ? theme ==  'dark' ? 'rgba(255,255,255,0.5)':'rgba(0,0,0,0.4)': theme ==  'dark' ? 'rgba(255,255,255,0.8)':'rgba(0,0,0,0.9)',
-                                // backgroundColor:'white',
-                                fontWeight:'bold',
-                                display:localStorage.getItem('userId') == post.userId ? 'none' : ''
+                            <div style={{
+                                display:'flex',
+                                alignItems:'flex-end',
+                                columnGap:'12px',
+                            }}>
+                        
+                            {viewing ? 
+                            <>
+                                {
+                                    canDelete ? <span onClick={()=>deletePost(post)}><span className='fas fa-trash-can' style={{marginTop:'18px'}} ></span> Delete</span>:''
+                                }
+                            </>
+                            :
+                                <>
+                                    <span style={{
+                                        padding:'5px 7px',
+                                        borderRadius:'5px',
+                                        color:post.following ? theme ==  'dark' ? 'rgba(255,255,255,0.5)':'rgba(0,0,0,0.4)': theme ==  'dark' ? 'rgba(255,255,255,0.8)':'rgba(0,0,0,0.9)',
+                                        // backgroundColor:'white',
+                                        fontWeight:'bold',
+                                        display:localStorage.getItem('userId') == post.userId ? 'none' : ''
 
-                            }} 
-                                onClick={()=>followUser(post)}
-                            >
-                            {
-                                post.following ? 'Following' : 'Follow'
-                            } 
-                            </span> 
-                            
+                                    }} 
+                                        onClick={()=>followUser(post)}
+                                    >
+                                    {
+                                        post.following ? 'Following' : 'Follow'
+                                    } 
+                                    </span> 
+                                    
 
-                            <span 
-                            className='options' 
-                            onClick={()=>handleOptions(post._id)}
-                            style={{display:localStorage.getItem('userId') == post.userId ? 'none' : ''}}
-                            >...</span>
+                                    <span 
+                                    className='options' 
+                                    onClick={()=>handleOptions(post._id)}
+                                    style={{display:localStorage.getItem('userId') == post.userId ? 'none' : ''}}
+                                    >...</span>
 
-                            <span 
-                            className='fas fa-close options' 
-                            onClick={()=>closePost(post)}
-                            style={{display:localStorage.getItem('userId') == post.userId ? '' : 'none'}}
-                            ></span>
-                        </div>
-                        }
+                                    <span 
+                                    className='fas fa-close options' 
+                                    onClick={()=>closePost(post)}
+                                    style={{display:localStorage.getItem('userId') == post.userId ? '' : 'none'}}
+                                    ></span>
+                                </>
+                            }
+                            </div>
 
                     {
                         post.option ? 
@@ -486,9 +515,13 @@ let displayPosts = posts.map(post =>{
 
     return(
         <React.Fragment>
-            {
-                switchView ? <Saving text={'Loading ... '}/> : ''
-            }
+
+            {deleteModal[0] ? <Delete setDeleteModal={setDeleteModal} postId={deleteModal[1]}/>:'' }
+
+            { switchView ? <Saving text={'Loading ... '}/> : '' }
+
+            {follow ? <Saving text={'Wait a moment ...'}/>:''}
+
             {signalModal[0] ? <Signal userName={signalModal[1]} setSignalModal={setSignalModal} userId={signalModal[2]}/>:''}
             
             {
@@ -500,7 +533,7 @@ let displayPosts = posts.map(post =>{
                         posts={posts} 
                         setPosts={setPosts} 
                     /> : ''
-                }
+            }
              
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
               

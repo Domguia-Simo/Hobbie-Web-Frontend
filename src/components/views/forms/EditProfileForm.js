@@ -199,8 +199,15 @@ function handleFileClose(file){
     }
 }
 
-const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
-const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
+let profilePicture = 'no'
+let profileBackground = 'no'
+
+if(JSON.parse(localStorage.getItem('profilePicture')))
+     profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+
+if(JSON.parse(localStorage.getItem('profileBackground')))
+     profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
+
     return(
         <React.Fragment>
             {loading ? <Saving text={'Saving Changes ...'}/> : ''}
@@ -312,7 +319,7 @@ const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).
                         onChange={(e)=>handleChange(e)}
                         style={{resize:'none'}}
                         name='bio'
-                        placeholder={localStorage.getItem('bio') ? localStorage.getItem('bio') : 'Hey! any thing about you ?'}
+                        placeholder={localStorage.getItem('bio') != 'no' ? localStorage.getItem('bio') : 'Hey! any thing about you ?'}
                     >
                     </textarea>
                </div>

@@ -39,16 +39,17 @@ const request = async({method ,url ,body}) => {
         //Delete Request
         case 'delete':
             console.log('delete Request')
-            return
+            // return
+            console.log(body)
+
             result = await fetch(url,{
                 method:"delete",
                 headers:{
-                   'Accept-Content':'appliation/json',
+                    'Content-Type':'application/json',
+                   'Accept':'appliation/json',
                    'Access-Control-Origin':'*' 
                 },
-                body:JSON.stringify({
-                    body
-                })
+                body:JSON.stringify(body)
             })
             .then(res => res.json())
             .then(data => { return data} )

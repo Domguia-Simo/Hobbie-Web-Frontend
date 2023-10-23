@@ -3,29 +3,29 @@ import request from '../../request/Request'
 import { ipAdress } from '../../../generals'
 import Saving from './Saving'
 
-const Signal =({userName ,setSignalModal,userId})=>{
+const Invite =({userName ,setInviteModal,userId})=>{
 
     const [loading ,setLoading] = useState(false)
 
-async function signalUser(){
+async function InviteUser(){
     let body={
         userId:userId,
-        signalingId:localStorage.getItem('userId')
+        Inviter:localStorage.getItem('userId')
     }
 
-    setSignalModal([false,'',''])
+    return
+    setInviteModal([false,'',''])
     setLoading(true)
 
-    let temp = await request({url:`http://${ipAdress}:5000/api/userAction/signalUser`,method:'post',body:body})
+    let temp = await request({url:`http://${ipAdress}:5000/api/userAction/InviteUser`,method:'post',body:body})
     console.log(temp)
-   
+
     setLoading(false)
     
 }
 
     return(
         <React.Fragment>
-            {loading ? <Saving/> :''}
             <div style={{
                 width:'100%',
                 height:'200%',
@@ -51,14 +51,14 @@ async function signalUser(){
                     flexDirection:'column',
                     alignItems:'center',
                     letterSpacing:'1px',
-                    lineHeight:'20px'
-
+                    lineHeight:'20px',
+                    display:loading ? 'none':''
                 }}> 
                    {/* <img src={require('../../../assets/images/loading.gif')} width='25px' height='25px'/> &nbsp;{text ? text: ''}
                     */}
-                    <h3 style={{borderBottom:'solid 1px ',paddingBottom:'2px'}}>Signal {userName}</h3>
+                    <h3 style={{borderBottom:'solid 1px ',paddingBottom:'2px'}}>Invitation</h3>
 
-                    <div>Signal inadequate content.<br/>Are you sure ?</div><br/>
+                    <div>Inviting <b>{userName}</b> to follow you ?</div><br/>
                     <div style={{
                         // border:'solid 1px',
                         width:'100%',
@@ -72,7 +72,7 @@ async function signalUser(){
                             padding:'5px 15px',
                             backgroundColor:'rgba(255,0,0,0.1)'
                         }}
-                        onClick={()=>setSignalModal([false,''])}
+                        onClick={()=>setInviteModal([false,''])}
                         >
                           No <i className='fas fa-close'></i> 
                         </span>
@@ -84,15 +84,17 @@ async function signalUser(){
                             backgroundColor:'rgba(0,255,0,0.1)'
 
                         }}
-                        onClick={()=>signalUser()}
+                        onClick={()=>InviteUser()}
                         >
                             Yes <i className='fas fa-check'></i>
                         </span>
                     </div>
                 </div>
             </div>
+            {loading ? <Saving text='Sending Invitation'/> :''}
+
         </React.Fragment>
     )
 }
 
-export default Signal
+export default Invite

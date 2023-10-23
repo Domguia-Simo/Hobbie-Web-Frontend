@@ -1,3 +1,13 @@
+@keyframes zoomOut {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .status-container {
   background-color: white;
   padding: 15px;

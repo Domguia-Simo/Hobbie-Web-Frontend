@@ -15,7 +15,7 @@
     .comments{
         display: flex;
         flex-direction: column;
-        row-gap: 7px;
+        row-gap: 10px;
         padding:0px 15px;
         overflow-y: scroll;
         height:75%;
@@ -43,6 +43,9 @@
                 border-top-left-radius: 0;
                 padding:5px 10px;
                 width:fit-content;
+                line-height: 20px;
+                letter-spacing: 0.5px;
+                
                 span:first-child{
                     font-weight: bold;
                 }
@@ -68,9 +71,9 @@
         bottom:0;
         display: flex;
         width:100%;
-        margin:10px 0px;
+        padding:10px 0px;
         background-color: rgba(255,255,255,0.95);
-        padding-top:4px;
+        // padding-top:4px;
         form{
             display: flex;
             // flex-direction: column;
@@ -79,6 +82,7 @@
             margin:auto;
             // margin-bottom:70px;
             width:fit-content;
+
             input{
                 padding:15px;
                 border:solid 1px rgba(0,0,0,0.2);
@@ -89,6 +93,8 @@
                 padding:0px 20px;
                 display: flex;
                 justify-content: space-between;
+                font-size: larger;
+                color:rgba(0,0,0,0.75)
             }
         }
     }

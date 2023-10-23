@@ -59,6 +59,7 @@ if(comments.length != 0){
                 comment.liked = true
         }
         
+        // console.log(comment.profilePicture)
         return (
             <div className='comment-body' key={comment.comment + comment.dateOfComment + Date.now()}>
                 <div className='comment-profile-picture'>

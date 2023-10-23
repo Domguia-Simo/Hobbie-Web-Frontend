@@ -1,5 +1,8 @@
 import React,{useState,useMemo} from 'react'
 import {Link ,useLocation, useNavigate} from 'react-router-dom'
+import File from '../modals/File'
+import Signal from '../modals/Signal'
+import Invite from '../modals/Invite'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
@@ -10,6 +13,10 @@ const ViewProfile =()=>{
     let location = useLocation()
 
     const [userInfo ,setUserInfo] = useState('')
+    const [fileModal ,setFileModal] = useState([false ,'' ,''])
+
+    const [signalModal ,setSignalModal] = useState([false ,'' ,''])
+    const [inviteModal ,setInviteModal] = useState([false ,'' ,''])
     const [posts ,setPosts] = useState([])
 
     if(location.state == ''){
@@ -23,25 +30,47 @@ const ViewProfile =()=>{
     const profileBackground = userInfo.profileBackground
 const profilePicture = userInfo.profilePicture
 
+function displayFile(file ,text){
+    let newFile = `http://${ipAdress}:5000/userPictures/${userInfo._id}/${file}`
+    setFileModal([true ,newFile ,text])
+}
+
+function handleSignal(){
+    setSignalModal([true ,userInfo.name,userInfo._id])
+}
+
+function handleInvitation(){
+    setInviteModal([true ,userInfo.name ,userInfo._id])
+}
+
     return(
         <React.Fragment>
             <div className='profile'>
+
+                {fileModal[0] ? <File file={fileModal[1]} setFile={setFileModal} text={fileModal[2]}/>:''}
+
+                {signalModal[0] ? <Signal userName={signalModal[1]} setSignalModal={setSignalModal} userId={signalModal[2]}/>:''}
+
+                {inviteModal[0] ? <Invite userName={inviteModal[1]} setInviteModal={setInviteModal} userId={inviteModal[2]}/>:''}
 
                 <div className='profile-bg'>
                     {profileBackground != 'no' ? 
                         <img 
                         src={`http://${ipAdress}:5000/userPictures/${userInfo._id}/${profileBackground}`}
                         className='profile-bg'
+                        onClick={()=>displayFile(profileBackground ,'Profile Background')}
                         />
                         :''
                     }
                 </div>
-                    <div >
+                    <div>
                         {profilePicture != 'no'  ? 
                        
                         <img 
                         src={`http://${ipAdress}:5000/userPictures/${userInfo._id}/${profilePicture}`}
                         className='profile-picture'
+                        onClick={()=>displayFile(profilePicture,'Profile Picture')}
+                        
                         /> :
                         <img src={require('../../../assets/images/tempPp.jpg')} className='profile-picture'/>
                         }
@@ -59,25 +88,36 @@ const profilePicture = userInfo.profilePicture
                     <span>Posts : {posts.length}</span>  
                    </div><br/>
 
-                   <div>
-
+                   <div style={{display:'flex',justifyContent:'space-around'}}>
+                        <button>
+                        <span className='fas fa-plus'></span>  Follow
+                        </button>
+                        <button>
+                           <span className='far fa-message'></span> message
+                        </button>
+                        {/* <button onClick={handleSignal}>
+                        <span className='far fa-thumbs-down'></span> Signal
+                        </button> */}
+                        <button onClick={handleInvitation}>
+                        <span className='far fa-envelope'></span>  Invite
+                        </button>
                     </div>
 
                 </div>
 
                 <div className='profile-actions' style={{lineHeight:'25px',padding:'0px 10px'}}>
                         <h3>Biography</h3>
-                        {userInfo.description ? userInfo.description : `Hey ! am ${userInfo.name}`}
+                        {userInfo.description != 'no' ? userInfo.description : `Hey ! am ${userInfo.name}`}<br/><br/>
                 </div>
 
                 <div className='profile-body'>
-                        <h3>&nbsp;&nbsp;&nbsp;Posts</h3>
+                        <h3 >&nbsp;&nbsp;&nbsp;Posts</h3>
                     <div className='profile-posts'>
                       <Posts InCommingposts={posts} viewing={true}/>
                     </div>
                     
                 </div>
-                
+
             </div>
         </React.Fragment>
     )

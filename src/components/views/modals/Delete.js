@@ -3,29 +3,26 @@ import request from '../../request/Request'
 import { ipAdress } from '../../../generals'
 import Saving from './Saving'
 
-const Signal =({userName ,setSignalModal,userId})=>{
+const Delete =({ setDeleteModal,postId})=>{
 
     const [loading ,setLoading] = useState(false)
 
-async function signalUser(){
-    let body={
-        userId:userId,
-        signalingId:localStorage.getItem('userId')
+async function handleDelete(){
+    const body={
+        postId:postId
     }
 
-    setSignalModal([false,'',''])
     setLoading(true)
-
-    let temp = await request({url:`http://${ipAdress}:5000/api/userAction/signalUser`,method:'post',body:body})
+    
+    let temp = await request({url:`http://${ipAdress}:5000/api/post/deletePost` ,method:'delete' ,body:body})
     console.log(temp)
-   
     setLoading(false)
+    setDeleteModal([false,''])
     
 }
 
     return(
         <React.Fragment>
-            {loading ? <Saving/> :''}
             <div style={{
                 width:'100%',
                 height:'200%',
@@ -51,14 +48,11 @@ async function signalUser(){
                     flexDirection:'column',
                     alignItems:'center',
                     letterSpacing:'1px',
-                    lineHeight:'20px'
-
+                    lineHeight:'20px',
+                    display:loading ? 'none':''
                 }}> 
-                   {/* <img src={require('../../../assets/images/loading.gif')} width='25px' height='25px'/> &nbsp;{text ? text: ''}
-                    */}
-                    <h3 style={{borderBottom:'solid 1px ',paddingBottom:'2px'}}>Signal {userName}</h3>
 
-                    <div>Signal inadequate content.<br/>Are you sure ?</div><br/>
+                    <div>Are you sure ?</div><br/>
                     <div style={{
                         // border:'solid 1px',
                         width:'100%',
@@ -70,9 +64,9 @@ async function signalUser(){
                             border:'solid 1px transparent',
                             borderRadius:'5px',
                             padding:'5px 15px',
-                            backgroundColor:'rgba(255,0,0,0.1)'
+                            backgroundColor:'rgba(255,0,0,0.5)'
                         }}
-                        onClick={()=>setSignalModal([false,''])}
+                        onClick={()=>setDeleteModal([false,''])}
                         >
                           No <i className='fas fa-close'></i> 
                         </span>
@@ -81,18 +75,20 @@ async function signalUser(){
                             border:'solid 1px transparent',
                             borderRadius:'5px',
                             padding:'5px 15px',
-                            backgroundColor:'rgba(0,255,0,0.1)'
+                            backgroundColor:'rgba(0,255,0,0.5)',
 
                         }}
-                        onClick={()=>signalUser()}
+                        onClick={()=>handleDelete()}
                         >
                             Yes <i className='fas fa-check'></i>
                         </span>
                     </div>
                 </div>
             </div>
+            {loading ? <Saving text='Deleting'/> :''}
+
         </React.Fragment>
     )
 }
 
-export default Signal
+export default Delete

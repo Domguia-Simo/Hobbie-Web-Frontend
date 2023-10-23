@@ -17,11 +17,22 @@ let navigate = useNavigate()
     const [tempImage ,setTempImage] = useState('')
     const [loading ,setLoading] = useState(false)
 
+    const [category ,setCategory] = useState([])
+
     //To have the current Date
 let date = new Date
 date = date.getDate() +'/'+ (date.getMonth()+1)+'/'+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes();
 
 const sendPost=async()=>{
+    console.log(category.length)
+    if(category.length > 4){
+        alert('You should only choose atmost 4 category')
+        return
+    }
+    if(category.length == 0){
+        alert('Please choose atleat one category')
+        return
+    }
 
     setLoading(true)
 
@@ -31,7 +42,8 @@ const sendPost=async()=>{
         description:description,
         dateOfCreation:date,
         userName:localStorage.getItem('userName'),
-        profilePicture:JSON.parse(localStorage.getItem('profilePicture')).name
+        profilePicture:JSON.parse(localStorage.getItem('profilePicture')).name,
+        category:category
     }
 
         let temp = await request({method:'post',url:`http://${ipAdress}:5000/api/post/createPost`,body:body})
@@ -73,6 +85,26 @@ const handleFileChange = async(e)=>{
     }
 }
 
+const handleCategory=(e)=>{
+    let newCat = category
+    let occurance = false
+    for(let i=0;i<category.length;i++){
+        if(newCat[i] == e.target.value)
+            occurance = true
+    }
+    if(!occurance){
+        newCat.push(e.target.value)
+    }else{
+        newCat.pop(e.target.value)    
+    }
+    setCategory(newCat)
+        
+    console.log(category.length)
+
+    console.log(category)
+}
+let text = 'anime'
+
     return(
         <React.Fragment>
             {loading ? <Saving text={'Uploading ...'}/>:''}
@@ -103,9 +135,9 @@ const handleFileChange = async(e)=>{
                                 
                             }
     
-                            <div className='upload-button'>
+                            {/* <div className='upload-button'>
                                 <span className='fas fa-plus'></span>  Upload a file
-                            </div>
+                            </div> */}
                         </label>
                         <input 
                             type='file' 
@@ -129,6 +161,22 @@ const handleFileChange = async(e)=>{
                             {/* <ReactTextareaAutocomplete/> */}
                         </textarea>
                     </div>
+                </center>
+
+                    Select one or more related category <br/>
+                <center style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(85px ,1fr))' ,textAlign:'left',padding:'10px 30px',rowGap:'10px'}}>
+                Anime/Mangas <input type='checkbox' value='Anime' onClick={(e)=>handleCategory(e)} />
+                Computer <input type='checkbox' value='Computer' onClick={(e)=>handleCategory(e)}/>
+                Fun <input type='checkbox' value='Fun' onClick={(e)=>handleCategory(e)}/>
+                Fashion <input type='checkbox' value='Fashion' onClick={(e)=>handleCategory(e)}/>
+                Games <input type='checkbox' value='Games' onClick={(e)=>handleCategory(e)}/>
+                Music <input type='checkbox' value='Music' onClick={(e)=>handleCategory(e)}/>
+                News <input type='checkbox' value='News' onClick={(e)=>handleCategory(e)}/>
+                Sport <input type='checkbox' value='Sport' onClick={(e)=>handleCategory(e)}/>
+                Technology <input type='checkbox' value='Technology' onClick={(e)=>handleCategory(e)}/>
+                Other <input type='checkbox' value='Other' onClick={(e)=>handleCategory(e)}/>
+
+
                 </center>
 
                     <center>

@@ -3,7 +3,9 @@ import {Link ,useLocation, useNavigate} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
-import request from '../../request/Request'
+import request from '../../request/Request' 
+import File from '../modals/File'
+
 import Posts from './Posts'
 
 const Profile =()=>{
@@ -11,12 +13,24 @@ const Profile =()=>{
     let navigate = useNavigate()
     
     const [body ,setBody] = useState('posts')
+    const [fileModal ,setFileModal] = useState([false,'',''])
     const [posts ,setPosts] = useState([])
 
     const [loadingPosts ,setLoadingPosts] = useState(false)
 
-const profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
-const profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+let profileBackground = 'no'
+let profilePicture = 'no'
+
+if(JSON.parse(localStorage.getItem('profileBackground')))
+     profileBackground = JSON.parse(localStorage.getItem('profileBackground')).file
+
+ if(JSON.parse(localStorage.getItem('profilePicture')))
+     profilePicture = JSON.parse(localStorage.getItem('profilePicture')).file
+
+function displayFile(file,text){
+    setFileModal([true ,file,text])
+}
+
 
 useEffect(()=>{
     async function fetchData(){
@@ -36,12 +50,13 @@ useEffect(()=>{
     return(
         <React.Fragment>
             <div className='profile'>
-
+                    {fileModal[0] ? <File file={fileModal[1]} setFile={setFileModal} text={fileModal[2]} />:''}
                 <div className='profile-bg'>
                     {profileBackground != 'no' ? 
                         <img 
                         src={profileBackground}
                         className='profile-bg'
+                        onClick={()=>displayFile(profileBackground,'Profile Background')}
                         />
                         :''
                     }
@@ -52,6 +67,7 @@ useEffect(()=>{
                         <img 
                         src={profilePicture}
                         className='profile-picture'
+                        onClick={()=>displayFile(profilePicture,'Profile Picture')}
                         /> :
                         <img src={require('../../../assets/images/tempPp.jpg')} className='profile-picture'/>
                         }
@@ -65,6 +81,8 @@ useEffect(()=>{
                    <div style={{display:'flex',justifyContent:'space-evenly'}} className='bold'>
                     <span>Following : {localStorage.getItem('following').split(',').length}</span>
                     <span>Followers : {localStorage.getItem('follower').split(',').length}</span>    
+                    <span>Posts : {posts.length}</span>    
+
                    </div><br/>
 
                     <div>
@@ -118,17 +136,17 @@ useEffect(()=>{
                                     <img src={require('../../../assets/images/loading.gif')} width='30px' height='30px'/>
                                 </center>:
                                 
-                                <Posts InCommingposts={posts}/>
+                                <Posts InCommingposts={posts} viewing={true} canDelete={true}/>
                                 }
                             </div>
                         </>
                         :
                         <>
                             <div className='profile-bio'>
-                                {localStorage.getItem('bio') != undefined ? localStorage.getItem('bio'):
-                                // <>
-                                `Hey am {localStorage.getItem('userName')}.<br/>`
-                                // </>
+                                {localStorage.getItem('bio') == 'undefined' ? localStorage.getItem('bio'):
+                                <>
+                                Hey am {localStorage.getItem('userName')}.<br/>
+                                </>
 
                                 }
                             </div>
