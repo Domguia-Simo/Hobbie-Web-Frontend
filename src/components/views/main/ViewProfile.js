@@ -1,10 +1,16 @@
-import React,{useState,useMemo} from 'react'
+import React,{useState,useMemo ,useRef ,useEffect} from 'react'
 import {Link ,useLocation, useNavigate} from 'react-router-dom'
 import File from '../modals/File'
 import Signal from '../modals/Signal'
 import Invite from '../modals/Invite'
 
+import {PrivateChat} from './Chat'
+
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
+
+import '../../../assets/styleSheets/chatStyles/chatStyles.css'
+
+
 import { ipAdress } from '../../../generals'
 import Posts from './Posts'
 
@@ -12,12 +18,22 @@ const ViewProfile =()=>{
     let navigate = useNavigate()
     let location = useLocation()
 
+    const mainContent = useRef(null)
     const [userInfo ,setUserInfo] = useState('')
     const [fileModal ,setFileModal] = useState([false ,'' ,''])
 
     const [signalModal ,setSignalModal] = useState([false ,'' ,''])
     const [inviteModal ,setInviteModal] = useState([false ,'' ,''])
+
+    const [chatModal ,setChatModal] = useState(false)
+
     const [posts ,setPosts] = useState([])
+
+    useEffect(()=>{
+        document.documentElement.scrollTop = 0;
+        document.scrollingElement.scrollTop = 0;
+        mainContent.current.scrollTop = 0;
+    },[useLocation()])
 
     if(location.state == ''){
         navigate(-1)
@@ -43,9 +59,19 @@ function handleInvitation(){
     setInviteModal([true ,userInfo.name ,userInfo._id])
 }
 
+function handleMessage(){
+    let body = {
+        userName:userInfo.name,
+        userId:userInfo._id,
+        profilePicture:profilePicture,
+        view:true
+    }
+    navigate('/privateChat',{state:JSON.stringify(body)})
+}
+
     return(
         <React.Fragment>
-            <div className='profile'>
+            <div className='profile' ref={mainContent}>
 
                 {fileModal[0] ? <File file={fileModal[1]} setFile={setFileModal} text={fileModal[2]}/>:''}
 
@@ -89,10 +115,12 @@ function handleInvitation(){
                    </div><br/>
 
                    <div style={{display:'flex',justifyContent:'space-around'}}>
+
                         <button>
                         <span className='fas fa-plus'></span>  Follow
                         </button>
-                        <button>
+
+                        <button onClick={handleMessage}>
                            <span className='far fa-message'></span> message
                         </button>
                         {/* <button onClick={handleSignal}>

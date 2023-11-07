@@ -1,5 +1,5 @@
 import React,{useState,useMemo,useEffect,useRef ,useContext} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate ,useLocation } from 'react-router-dom'
 import NoAccount from '../modals/NoAccount'
 import request from '../../request/Request'
 import { ipAdress,stringDate } from '../../../generals'
@@ -11,21 +11,24 @@ import Delete from '../modals/Delete'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 //context provider
-import { ThemeContext } from '../../contextProvider/Provider'
+import { SocketContext, ThemeContext } from '../../contextProvider/Provider'
 
 //styling sheet
 import '../../../assets/styleSheets/postStyles/postStyles.css'
 
-const socketClient = require('socket.io-client')
+// const socketClient = require('socket.io-client')
 
-const io = socketClient.io
+// const io = socketClient.io
 
 //socket connection with the server
-let socket = new io(`http://${ipAdress}:5000`)
+// let socket = new io(`http://${ipAdress}:5000`)
 
 const Posts = ({InCommingposts ,viewing ,canDelete}) => {
     let navigate = useNavigate()
   
+    const socket = useContext(SocketContext)
+
+    const mainContent = useRef(null)
     const [posts ,setPosts] = useState(InCommingposts)
 
     const [NoAccountModal ,setNoAccountModal] = useState(false)
@@ -42,6 +45,12 @@ const Posts = ({InCommingposts ,viewing ,canDelete}) => {
     
     const [page ,setPage] = useState(0)
     const [loadMoreCall ,setLoadMoreCall] = useState(false)
+
+    useEffect(()=>{
+        document.documentElement.scrollTop = 0;
+        document.scrollingElement.scrollTop = 0;
+        mainContent.current.scrollTop = 0;
+    },[useLocation()])
 
 let theme = useContext(ThemeContext).theme
 
@@ -538,7 +547,7 @@ let displayPosts = posts.map(post =>{
             {NoAccountModal ? <NoAccount setModal={setNoAccountModal}/> : ''}
               
 
-            <div className='full-post-body' onClick={(e)=>closeOptions(e)} >
+            <div className='full-post-body' onClick={(e)=>closeOptions(e)} ref={mainContent}>
                 {displayPosts}
 
             </div>

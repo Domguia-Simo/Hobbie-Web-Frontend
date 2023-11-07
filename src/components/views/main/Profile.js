@@ -1,22 +1,29 @@
-import React,{useState ,useMemo ,useEffect} from 'react'
+import React,{useState ,useMemo ,useEffect ,useRef} from 'react'
 import {Link ,useLocation, useNavigate} from 'react-router-dom'
 
 import '../../../assets/styleSheets/profileStyles/profileStyles.css'
 import { ipAdress } from '../../../generals'
 import request from '../../request/Request' 
 import File from '../modals/File'
-
+ 
 import Posts from './Posts'
 
 const Profile =()=>{
 
     let navigate = useNavigate()
     
+    const mainContent = useRef(null)
     const [body ,setBody] = useState('posts')
     const [fileModal ,setFileModal] = useState([false,'',''])
     const [posts ,setPosts] = useState([])
 
     const [loadingPosts ,setLoadingPosts] = useState(false)
+
+    useEffect(()=>{
+        document.documentElement.scrollTop = 0;
+        document.scrollingElement.scrollTop = 0;
+        mainContent.current.scrollTop = 0;
+    },[useLocation()])
 
 let profileBackground = 'no'
 let profilePicture = 'no'
@@ -49,7 +56,7 @@ useEffect(()=>{
 
     return(
         <React.Fragment>
-            <div className='profile'>
+            <div className='profile' ref={mainContent}>
                     {fileModal[0] ? <File file={fileModal[1]} setFile={setFileModal} text={fileModal[2]} />:''}
                 <div className='profile-bg'>
                     {profileBackground != 'no' ? 

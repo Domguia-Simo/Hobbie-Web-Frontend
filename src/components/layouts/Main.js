@@ -10,7 +10,7 @@ import request from '../request/Request'
 import DefaultView from '../views/main/Default'
 
 //Context Provider
-import { ThemeContext, ThemeProvider } from '../contextProvider/Provider'
+import { ThemeContext, ThemeProvider ,SocketProvider } from '../contextProvider/Provider'
 
 
 //Styling sheet
@@ -42,6 +42,7 @@ useEffect(()=>{
     return(
         <React.Fragment>
             <ThemeProvider>
+                <SocketProvider>
                 <div id="main-body">
                     <Header />
                     <div className='main-content'>
@@ -54,6 +55,7 @@ useEffect(()=>{
                     </div>
 
                 </div>
+                </SocketProvider>
             </ThemeProvider>
         </React.Fragment>
     )

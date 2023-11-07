@@ -31,7 +31,7 @@ const mainRoutes = [
         layout:'/home'
     },
     {
-        path:'/private-chat',
+        path:'/privateChat',
         component:<PrivateChat/>,
         layout:'/home'
     },

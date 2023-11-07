@@ -2,16 +2,27 @@ import React,{useState ,useMemo ,useContext } from 'react'
 import {Link } from 'react-router-dom'
 
 //context Provider
-import { ThemeContext } from '../contextProvider/Provider'
+import { ThemeContext,SocketContext } from '../contextProvider/Provider'
 
 //styleing sheet
 import '../../assets/styleSheets/headerStyles/headerStyles.css'
 import request from '../request/Request'
 import { ipAdress } from '../../generals'
 
+
+
+
 export const Header =()=>{
     const [active ,setActive] = useState('home')
     const [user ,setUser] = useState(false)
+
+const socket = useContext(SocketContext)
+
+socket.on('messageNotification',async(param)=>{
+    console.log(param)
+})
+
+socket.emit('test','simo')
 
 let theme = useContext(ThemeContext).theme
 
