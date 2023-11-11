@@ -1,5 +1,5 @@
 //This file contains general/global variable in the app for rapid change and testing
-export const ipAdress = 'localhost'
+export const ipAdress = '192.168.31.195'
 
 export const stringDate=(date)=>{
     let goodDate = date.split('/')

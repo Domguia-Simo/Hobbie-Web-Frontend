@@ -391,7 +391,7 @@ let displayPosts = posts.map(post =>{
             // post.description = post.description.replaceAll('\n','<br />')
         }
 
-    return(
+    return( 
             <div className='post-container' key={post._id}  style={{backgroundColor:theme == 'dark' ? 'rgba(30,30,35,1)':'',color:theme == 'dark'?'white':''}} >
                     
                 <div className='post-head'>
