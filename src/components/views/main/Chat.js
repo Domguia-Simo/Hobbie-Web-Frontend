@@ -366,7 +366,7 @@ socket.on('messageReceived',(newMessage)=>{
 
 //To receive a sent message
 socket.on('receivedMessage',(body)=>{
-    console.log(body)
+    console.log("msg received" ,body)
     // return
     let newOldMessage = oldMessages
     newOldMessage.push(body.newMessage)
